@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsuarioService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">clientes</a> &gt; <a href="index.source.html" class="el_package">com.api.clientes.Service</a> &gt; <span class="el_source">UsuarioService.java</span></div><h1>UsuarioService.java</h1><pre class="source lang-java linenums">package com.api.clientes.Service;
+
+import com.api.clientes.model.entity.Usuario;
+import com.api.clientes.model.enums.Perfil;
+import com.api.clientes.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+@Service
+<span class="fc" id="L13">public class UsuarioService {</span>
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private UsuarioRepository repositoty;
+
+    public Usuario insert(Usuario usuario) {
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (existsByUsername(usuario.getUsername())) {</span>
+<span class="fc" id="L23">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Já existe usuário com o login &quot; + usuario.getUsername() + &quot;cadastrado&quot;);</span>
+        } else {
+<span class="fc" id="L25">            usuario.setId(null);</span>
+<span class="fc" id="L26">            usuario.setPassword(encoder.encode(usuario.getPassword()));</span>
+<span class="fc" id="L27">            return repositoty.save(usuario);</span>
+        }
+    }
+
+    public boolean existsByUsername(String username) {
+<span class="fc" id="L32">        return repositoty.existsByUsername(username);</span>
+    }
+
+
+    public Usuario findById(Integer id) {
+<span class="fc" id="L37">        return repositoty.findById(id).orElseThrow(() -&gt; new ResponseStatusException(</span>
+                HttpStatus.NOT_FOUND, &quot;Não existe usuario com esse id &quot; + id + &quot;.&quot;));
+    }
+
+    public Usuario addAdmin(Integer id) {
+<span class="fc" id="L42">        Usuario usuario = findById(id);</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (!usuario.getPerfis().contains(Perfil.ADMIN)) {</span>
+<span class="fc" id="L44">            usuario.addPerfil(Perfil.ADMIN);</span>
+<span class="fc" id="L45">            usuario = repositoty.save(usuario);</span>
+        }
+<span class="fc" id="L47">        return usuario;</span>
+    }
+
+    public Usuario findByUsername(String email) {
+<span class="fc" id="L51">        return repositoty.findByUsername(email).orElseThrow(</span>
+<span class="fc" id="L52">                () -&gt; new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;O email fornecido (&quot; + email + &quot;) não está cadastrado.&quot;));</span>
+    }
+
+    public void updatePassword(Usuario usuario, String password) {
+<span class="fc" id="L56">        usuario = this.findByUsername(usuario.getUsername());</span>
+<span class="fc" id="L57">        usuario.setPassword(encoder.encode(password));</span>
+<span class="fc" id="L58">        repositoty.save(usuario);</span>
+<span class="fc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,20 @@
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:17.0.7
+    working_directory: ~/projeto-clientes
+    steps:
+      - checkout
+      - run:
+          name: Set executable permissions for mvnw
+          command: chmod +x backend/mvnw
+      - run:
+          name: Build and test
+          command: cd backend && ./mvnw clean test
+      - run:
+          name: Code coverage
+          command: |
+            cd backend
+            curl -sL https://codecov.io/bash > codecov.sh
+            chmod +x codecov.sh
+            ./codecov.sh -t 088e41a4-8615-4b86-8bce-9a0334976c25

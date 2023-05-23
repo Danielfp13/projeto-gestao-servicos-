@@ -1,0 +1,12 @@
+select.form-select {
+    height: 1.7rem;
+    font-size: 0.9rem;
+    padding-top: 0.0rem; /* ajuste o valor conforme necessário */
+    margin-bottom: 1.0rem; /* ajuste o valor conforme necessário */
+    width: 70px;
+  }
+  .small-select {
+    font-size: 0.875rem;
+    height: 2.2rem;
+    width: 6.3rem;
+  }

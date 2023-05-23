@@ -1,0 +1,62 @@
+package com.api.clientes.model.entity;
+
+import com.api.clientes.model.enums.Perfil;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Entity
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Usuario {
+    @Id
+    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotBlank(message = "O campo login é obrigatório")
+    @Email(message = "Esse não é um email válido.")
+    @Column(unique = true)
+    private String username;
+
+    @Column
+    @NotBlank(message = "O campo nome é obrigatório")
+    private String nome;
+    @NotBlank(message = "O campo senha é obrigatório")
+    @Column(length = 255)
+    private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "perfis")
+    private Set<Integer> perfis = new HashSet<>();
+
+
+    public Usuario(Integer id, String username, String nome, String password) {
+        this.id = id;
+        this.nome = nome;
+        this.username = username;
+        this.password = password;
+        addPerfil(Perfil.USER);
+    }
+
+    public Usuario() {
+        addPerfil(Perfil.USER);
+    }
+
+    public Set<Perfil> getPerfis() {
+        return perfis.stream().map((x) -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addPerfil(Perfil role) {
+        this.perfis.add(role.getCod());
+    }
+
+}

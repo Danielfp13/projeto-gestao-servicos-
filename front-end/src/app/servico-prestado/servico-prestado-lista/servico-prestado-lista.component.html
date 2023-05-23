@@ -1,0 +1,100 @@
+<h1 class="mt-4">Serviço Prestado</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrum-bitem active">
+        Consulta
+    </li>
+</ol>
+<div class="container mx-auto">
+    <form #QualquerNome="ngForm" (submit)="consultar()  ">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-warning" role="alert" *ngIf="message">
+                    {{ message }}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="inputNome">Nome do cliente</label>
+                <input type="text" [(ngModel)]="nome" class="form-control" name="nome" id="inputNome"
+                    (keyup)="onPaginaChange()">
+            </div>
+
+            <div class="col-md-6">
+                <label for="inputMes">Mês</label>
+                <select class="form-control" [(ngModel)]="mes" name="mes" (change)="onPaginaChange()">
+                    <option *ngFor="let item of meses" [value]="item.numeroMes" [selected]="item.textoMes">{{
+                        item.textoMes }}</option>
+                </select>
+            </div>
+        </div>
+        <p></p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-success" (click)="paginaAtual=1">
+                    <i class="fa fa-search"></i> Consultar
+                </button>
+                <content *ngFor="let role of roles">
+                    <button type="button" class="btn btn-warning ml-3" routerLink="/servicos-prestado/form"
+                        *ngIf="role === 'ROLE_USER'">
+                        <i class="fa fa-plus"></i> novo
+                    </button>
+                </content>
+            </div>
+
+            <div class="form-group d-flex align-items-center justify-content-end col-md-6">
+                <label for="valor">Ordenar por:</label>
+                <select class="form-control ml-2 small-select text-center" [(ngModel)]="ordenar" name="valor" id="valor"
+                    (change)="ordenandoChange()">
+                    <option *ngFor="let item of ordenarPor" [value]="item">{{ item }}</option>
+                </select>
+            </div>
+        </div>
+    </form>
+    <p></p>
+    <div class="row">
+        <div class="col md-12">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let s of servicosPrestados  |
+                     paginate: { itemsPerPage: linhasPorPagina, currentPage: paginaAtual, totalItems: totalItens} ">
+
+                        <td> {{s.cliente.nome}}</td>
+                        <td> {{s.descricao}}</td>
+                        <td> {{formatCurrency(s.valor) }}</td>
+                        <td> {{s.data}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-12 col-md-12 col-sm-12 mt-3 d-flex justify-content-center align-items-center">
+            <pagination-controls (pageChange)="onPageChange($event)" previousLabel="Anterior" nextLabel="Próximo"
+                [responsive]="true"></pagination-controls>
+            <label for="linhasPorPagina" class="me-2 mb-3">itens:</label>
+            <select class="form-select text-center" name="linhasPorPagina" [(ngModel)]="linhasPorPagina"
+                (change)="onPaginaChange()">
+                <option *ngFor="let opcao of opcoesPorPagina" [value]="opcao">{{opcao}}</option>
+            </select>
+        </div>
+    </div>
+
+
+
+
+</div>
