@@ -13,19 +13,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.api.clientes.resources.util.JsonConvertionUtils.asJsonString;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -103,6 +106,56 @@ class UsuarioResourseTest {
                         "O campo nome é obrigatório", "O campo login é obrigatório",
                         "O campo senha é obrigatório")));
     }
+
+    @Test
+    @DisplayName("Deve buscar um usuario por id")
+    void findById() throws Exception {
+        int id = 1;
+        when(usuarioService.findById(id)).thenReturn(usuario);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get(USUARIO_API_URI_PATH.concat("/" + id))
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + accessToken);
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(1))
+                .andExpect(jsonPath("nome").value(usuario.getNome()))
+                .andExpect(jsonPath("username").value(usuario.getUsername()))
+                .andExpect(jsonPath("password").value(usuario.getPassword()))
+                .andExpect(jsonPath("perfis[0]").value("USER"));
+        Mockito.verify(usuarioService, Mockito.times(1)).findById(id);
+    }
+
+    @Test
+    @DisplayName("Deve buscar uma página de usuarios ")
+    void findPageTest() throws Exception {
+
+        Usuario usuario2 =  new Usuario(2, "paulo@email.com", "Paulo", "123");
+        List<Usuario> usuarioList = Arrays.asList(usuario, usuario2);
+        Page<Usuario> usuarioPage = new PageImpl<>(usuarioList);
+
+        when(usuarioService.findPage(anyInt(), anyInt(), anyString(),anyString())).thenReturn(usuarioPage);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get(USUARIO_API_URI_PATH.concat("/page"))
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + accessToken)
+                .param("page", "0")
+                .param("size", "5")
+                .param("direction", "ASC")
+                .param("orderBy", "nome");;
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("content[0].id").value(usuario.getId()))
+                .andExpect(jsonPath("content[0].username").value(usuario.getUsername()))
+                .andExpect(jsonPath("content[0].nome").value(usuario.getNome()))
+                .andExpect(jsonPath("content[0].password").value(usuario.getPassword()))
+                .andExpect(jsonPath("content[0].perfis[0]").value("USER"));
+           }
+
 
     @Test
     @DisplayName("Deve adicionar o perfil admin no usuário ")

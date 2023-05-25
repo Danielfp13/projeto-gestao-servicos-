@@ -4,6 +4,9 @@ import com.api.clientes.model.entity.Usuario;
 import com.api.clientes.model.enums.Perfil;
 import com.api.clientes.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,5 +59,10 @@ public class UsuarioService {
         usuario = this.findByUsername(usuario.getUsername());
         usuario.setPassword(encoder.encode(password));
         repositoty.save(usuario);
+    }
+
+    public Page<Usuario> findPage(Integer page, Integer linePerPage, String direction, String orderBy) {
+        PageRequest pageRequest = PageRequest.of(page,linePerPage, Sort.Direction.valueOf(direction),orderBy);
+        return repositoty.findAll(pageRequest);
     }
 }

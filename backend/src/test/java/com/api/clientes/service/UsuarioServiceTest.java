@@ -11,11 +11,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,7 +79,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    @DisplayName("Deve buscar um usário por id")
+    @DisplayName("Deve buscar um usuário por id")
     void findByIdTest() {
         int id = 1;
 
@@ -86,6 +92,32 @@ class UsuarioServiceTest {
         assertThat(usuarioEncontrado.getUsername()).isEqualTo(usuario.getUsername());
         assertThat(usuarioEncontrado.getPassword()).isEqualTo(usuario.getPassword());
         assertThat(usuarioEncontrado.getPerfis()).isEqualTo(usuario.getPerfis());
+    }
+
+    @Test
+    @DisplayName("Deve buscar uma pagina de usuario")
+    void findPageTest() {
+        Integer page = 0;
+        Integer linePerPage = 5;
+        String direction = "ASC";
+        String orderBy = "nome";
+
+        Usuario usuario2 =  new Usuario(2, "paulo@email.com", "Paulo", "123");
+        List<Usuario> usuarioList = Arrays.asList(usuario, usuario2);
+        Page<Usuario> usuarioPage = new PageImpl<>(usuarioList);
+
+        PageRequest pageRequest = PageRequest.of(page, linePerPage, Sort.Direction.valueOf(direction), orderBy);
+
+
+        when(usuarioRepository.findAll(pageRequest)).thenReturn(usuarioPage);
+
+        Page<Usuario> pageEncontrado = usuarioService.findPage(page, linePerPage, direction, orderBy);
+
+        assertThat(pageEncontrado.getContent().get(0).getId()).isEqualTo(usuario.getId());
+        assertThat(pageEncontrado.getContent().get(0).getNome()).isEqualTo(usuario.getNome());
+        assertThat(pageEncontrado.getContent().get(0).getUsername()).isEqualTo(usuario.getUsername());
+        assertThat(pageEncontrado.getContent().get(0).getPassword()).isEqualTo(usuario.getPassword());
+        assertThat(pageEncontrado.getContent().get(0).getPerfis()).isEqualTo(usuario.getPerfis());
     }
 
     @Test
@@ -164,7 +196,6 @@ class UsuarioServiceTest {
         when(usuarioRepository.findByUsername(anyString())).thenReturn(Optional.of(usuario));
         when(encoder.encode(anyString())).thenReturn(novaSenha);
         when(usuarioRepository.save(any())).thenReturn(usuario);
-
         usuarioService.updatePassword(usuario, novaSenha);
 
         assertThat(usuario.getPassword()).isEqualTo(novaSenha);
