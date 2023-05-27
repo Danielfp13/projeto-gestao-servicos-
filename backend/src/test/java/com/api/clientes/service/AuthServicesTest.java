@@ -189,32 +189,35 @@ class AuthServicesTest {
     }
 
 
+    @Test
+    @DisplayName("Deve retornar true ao verificar parâmetros nulos")
+    public void testCheckIfParamsIsNotNull_WithNullParams_ShouldReturnTrue() {
+        AuthServices authServices = new AuthServices();
 
+        boolean result = authServices.checkIfParamsIsNotNull(null, null);
 
+        assertTrue(result);
+    }
 
-/*    @Test
-    @DisplayName("Deve lançar ResponseStatusException com status 500 e mensagem adequada ao fazer o signin com erro interno do servidor")
-    void signinWithInternalServerErrorTest() {
-        // Arrange
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);
+    @Test
+    @DisplayName("Deve retornar true ao verificar strings em branco")
+    public void testCheckIfParamsIsNotNull_WithBlankStrings_ShouldReturnTrue() {
+        AuthServices authServices = new AuthServices();
 
-        when(repository.findByUsername(eq(accountCredentialsDTO.getUsername()))).thenReturn(Optional.of(usuario));
-        doThrow(new RuntimeException("Erro interno do servidor!")).when(tokenProvider).createAccessToken(anyString(), anyString(), any());
+        boolean result = authServices.checkIfParamsIsNotNull("", "");
 
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
-                authServices.signin(accountCredentialsDTO));
-        assertEquals("Erro interno do servidor!", exception.getReason());
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatusCode());
-    }*/
+        assertTrue(result);
+    }
 
+    @Test
+    @DisplayName("Deve retornar false ao verificar parâmetros não nulos")
+    public void testCheckIfParamsIsNotNull_WithNonNullParams_ShouldReturnFalse() {
+        AuthServices authServices = new AuthServices();
 
+        boolean result = authServices.checkIfParamsIsNotNull("username", "refreshToken");
 
-
-    /*    assertEquals(exception.getReason(),"Erro interno do servidor!");
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatusCode());
-        */
-
+        assertFalse(result);
+    }
 
     private void start() {
         usuario = new Usuario(1, "ana@email.com", "Ana Maria", "123");

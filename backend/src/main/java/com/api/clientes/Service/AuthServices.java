@@ -28,7 +28,7 @@ public class AuthServices {
     private UsuarioRepository repository;
 
     public TokenDTO signin(AccountCredentialsDTO data) {
-        if (checkIfParamsIsNotNull(data))
+        if (checkIfParamsIsNotNull(data.getUsername(),data.getPassword()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Requisisão inválida, dados incompletos.");
         try {
             String email = data.getUsername();
@@ -64,14 +64,15 @@ public class AuthServices {
         }
     }
 
-    public boolean checkIfParamsIsNotNull(String username, String refreshToken) {
-        return refreshToken == null || refreshToken.isBlank() ||
-                username == null || username.isBlank();
-    }
-
-    public boolean checkIfParamsIsNotNull(AccountCredentialsDTO data) {
-        return data == null || data.getUsername() == null || data.getUsername().isBlank()
-                || data.getPassword() == null || data.getPassword().isBlank();
+    public boolean checkIfParamsIsNotNull(Object... params) {
+        for (Object param : params) {
+            if (param == null) {
+                return true;
+            } else if (param instanceof String && ((String) param).isBlank()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
