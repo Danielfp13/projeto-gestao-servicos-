@@ -17,6 +17,4 @@ jobs:
             cd backend
             curl -sL https://codecov.io/bash > codecov.sh
             chmod +x codecov.sh
-            ./codecov.sh -t ab21d35f-0859-4201-a866-95a0962e5650
-            codecov:
- 
+            ./codecov.sh 
