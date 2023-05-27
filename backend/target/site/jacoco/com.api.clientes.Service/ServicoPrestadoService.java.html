@@ -31,19 +31,32 @@ import java.time.format.DateTimeFormatter;
     public ServicoPrestado insert(ServicoPrestadoDto obj) {
 <span class="fc" id="L32">        LocalDate data = LocalDate.parse(obj.getData(), DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;));</span>
 <span class="fc" id="L33">        Integer idCliente = obj.getIdCliente();</span>
+		
+<span class="fc" id="L35">		System.out.println(&quot;Olá Brasil!!!!&quot;);</span>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
-<span class="fc" id="L35">        Cliente cliente = clienteRepository.findById(idCliente)</span>
-<span class="fc" id="L36">                .orElseThrow(() -&gt; new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Cliente inexistente.&quot;));</span>
+<span class="fc" id="L48">        Cliente cliente = clienteRepository.findById(idCliente)</span>
+<span class="fc" id="L49">                .orElseThrow(() -&gt; new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Cliente inexistente.&quot;));</span>
 
-<span class="fc" id="L38">        ServicoPrestado servicoPrestado = new ServicoPrestado(null, obj.getDescricao(), cliente,</span>
-<span class="fc" id="L39">                stringToBigdecimal.convert(obj.getPreco()), data);</span>
+<span class="fc" id="L51">        ServicoPrestado servicoPrestado = new ServicoPrestado(null, obj.getDescricao(), cliente,</span>
+<span class="fc" id="L52">                stringToBigdecimal.convert(obj.getPreco()), data);</span>
 
-<span class="fc" id="L41">        return servicoPrestadoRepositoty.save(servicoPrestado);</span>
+<span class="fc" id="L54">        return servicoPrestadoRepositoty.save(servicoPrestado);</span>
     }
 
     public Page&lt;ServicoPrestado&gt; findByNameClienteAndMonth(String nome, String mes, Integer page, Integer size, String direction, String orderBy) {
-<span class="fc" id="L45">        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);</span>
-<span class="fc" id="L46">        return servicoPrestadoRepositoty.findByNameClienteAndMonth(</span>
+<span class="fc" id="L58">        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);</span>
+<span class="fc" id="L59">        return servicoPrestadoRepositoty.findByNameClienteAndMonth(</span>
                 &quot;%&quot; + nome + &quot;%&quot;, &quot;%&quot; + mes, pageRequest);
     }
 }

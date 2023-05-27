@@ -4,13 +4,16 @@ import com.api.clientes.model.entity.Usuario;
 import com.api.clientes.model.enums.Perfil;
 import com.api.clientes.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-<span class="fc" id="L13">public class UsuarioService {</span>
+<span class="fc" id="L16">public class UsuarioService {</span>
 
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -19,43 +22,48 @@ import org.springframework.web.server.ResponseStatusException;
     private UsuarioRepository repositoty;
 
     public Usuario insert(Usuario usuario) {
-<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (existsByUsername(usuario.getUsername())) {</span>
-<span class="fc" id="L23">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Já existe usuário com o login &quot; + usuario.getUsername() + &quot;cadastrado&quot;);</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (existsByUsername(usuario.getUsername())) {</span>
+<span class="fc" id="L26">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Já existe usuário com o login &quot; + usuario.getUsername() + &quot;cadastrado&quot;);</span>
         } else {
-<span class="fc" id="L25">            usuario.setId(null);</span>
-<span class="fc" id="L26">            usuario.setPassword(encoder.encode(usuario.getPassword()));</span>
-<span class="fc" id="L27">            return repositoty.save(usuario);</span>
+<span class="fc" id="L28">            usuario.setId(null);</span>
+<span class="fc" id="L29">            usuario.setPassword(encoder.encode(usuario.getPassword()));</span>
+<span class="fc" id="L30">            return repositoty.save(usuario);</span>
         }
     }
 
     public boolean existsByUsername(String username) {
-<span class="fc" id="L32">        return repositoty.existsByUsername(username);</span>
+<span class="fc" id="L35">        return repositoty.existsByUsername(username);</span>
     }
 
 
     public Usuario findById(Integer id) {
-<span class="fc" id="L37">        return repositoty.findById(id).orElseThrow(() -&gt; new ResponseStatusException(</span>
+<span class="fc" id="L40">        return repositoty.findById(id).orElseThrow(() -&gt; new ResponseStatusException(</span>
                 HttpStatus.NOT_FOUND, &quot;Não existe usuario com esse id &quot; + id + &quot;.&quot;));
     }
 
     public Usuario addAdmin(Integer id) {
-<span class="fc" id="L42">        Usuario usuario = findById(id);</span>
-<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (!usuario.getPerfis().contains(Perfil.ADMIN)) {</span>
-<span class="fc" id="L44">            usuario.addPerfil(Perfil.ADMIN);</span>
-<span class="fc" id="L45">            usuario = repositoty.save(usuario);</span>
+<span class="fc" id="L45">        Usuario usuario = findById(id);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (!usuario.getPerfis().contains(Perfil.ADMIN)) {</span>
+<span class="fc" id="L47">            usuario.addPerfil(Perfil.ADMIN);</span>
+<span class="fc" id="L48">            usuario = repositoty.save(usuario);</span>
         }
-<span class="fc" id="L47">        return usuario;</span>
+<span class="fc" id="L50">        return usuario;</span>
     }
 
     public Usuario findByUsername(String email) {
-<span class="fc" id="L51">        return repositoty.findByUsername(email).orElseThrow(</span>
-<span class="fc" id="L52">                () -&gt; new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;O email fornecido (&quot; + email + &quot;) não está cadastrado.&quot;));</span>
+<span class="fc" id="L54">        return repositoty.findByUsername(email).orElseThrow(</span>
+<span class="fc" id="L55">                () -&gt; new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;O email fornecido (&quot; + email + &quot;) não está cadastrado.&quot;));</span>
     }
 
     public void updatePassword(Usuario usuario, String password) {
-<span class="fc" id="L56">        usuario = this.findByUsername(usuario.getUsername());</span>
-<span class="fc" id="L57">        usuario.setPassword(encoder.encode(password));</span>
-<span class="fc" id="L58">        repositoty.save(usuario);</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L59">        usuario = this.findByUsername(usuario.getUsername());</span>
+<span class="fc" id="L60">        usuario.setPassword(encoder.encode(password));</span>
+<span class="fc" id="L61">        repositoty.save(usuario);</span>
+<span class="fc" id="L62">    }</span>
+
+    public Page&lt;Usuario&gt; findPage(Integer page, Integer linePerPage, String direction, String orderBy) {
+<span class="fc" id="L65">        PageRequest pageRequest = PageRequest.of(page,linePerPage, Sort.Direction.valueOf(direction),orderBy);</span>
+<span class="fc" id="L66">        return repositoty.findAll(pageRequest);</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -4,6 +4,7 @@ import com.api.clientes.Service.UsuarioService;
 import com.api.clientes.model.entity.Usuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,22 +15,47 @@ import java.net.URI;
 @RestController
 @RequestMapping(&quot;/usuarios&quot;)
 //@CrossOrigin(&quot;http://localhost:4200&quot;)
-<span class="fc" id="L17">public class UsuarioResourse {</span>
+<span class="fc" id="L18">public class UsuarioResourse {</span>
 
     @Autowired
     private UsuarioService service;
 
     @PostMapping
     public ResponseEntity&lt;Usuario&gt; insert(@Valid @RequestBody Usuario usuario) {
-<span class="fc" id="L24">        usuario = service.insert(usuario);</span>
-<span class="fc" id="L25">        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;).buildAndExpand(usuario.getId()).toUri();</span>
-<span class="fc" id="L26">        return ResponseEntity.created(uri).body(usuario);</span>
+<span class="fc" id="L25">        usuario = service.insert(usuario);</span>
+<span class="fc" id="L26">        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;).buildAndExpand(usuario.getId()).toUri();</span>
+<span class="fc" id="L27">        return ResponseEntity.created(uri).body(usuario);</span>
     }
 
     @PostMapping(&quot;/perfil-admin/{id}&quot;)
     public ResponseEntity&lt;Usuario&gt; addAdmin(@PathVariable Integer id) {
-<span class="fc" id="L31">        Usuario usuario = service.addAdmin(id);</span>
-<span class="fc" id="L32">        return ResponseEntity.ok(usuario);</span>
+<span class="fc" id="L32">        Usuario usuario = service.addAdmin(id);</span>
+<span class="fc" id="L33">        return ResponseEntity.ok(usuario);</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Usuario&gt;findById(@PathVariable Integer id){
+<span class="fc" id="L38">        return ResponseEntity.ok(service.findById(id));</span>
+    }
+
+    @GetMapping(&quot;/page&quot;)
+    public  ResponseEntity&lt;Page&lt;Usuario&gt;&gt;findPage(
+            @RequestParam(value = &quot;page&quot;, defaultValue = &quot;0&quot;, required = false) Integer page,
+            @RequestParam(value = &quot;linePerPage&quot;, defaultValue = &quot;10&quot;, required = false) Integer linePerPage,
+            @RequestParam(value = &quot;direction&quot;, defaultValue = &quot;ASC&quot;, required = false) String direction,
+            @RequestParam(value = &quot;ordeBy&quot;, defaultValue = &quot;nome&quot;, required = false) String orderBy
+    ){
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+<span class="fc" id="L58">        return ResponseEntity.ok(service.findPage(page,linePerPage,direction,orderBy));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
