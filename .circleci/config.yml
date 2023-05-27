@@ -18,3 +18,6 @@ jobs:
             curl -sL https://codecov.io/bash > codecov.sh
             chmod +x codecov.sh
             ./codecov.sh -t 088e41a4-8615-4b86-8bce-9a0334976c25
+            codecov: 
+ codecov: 
+ 
