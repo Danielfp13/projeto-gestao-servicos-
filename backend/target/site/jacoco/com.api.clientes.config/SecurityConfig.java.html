@@ -29,51 +29,44 @@ import java.util.Arrays;
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-    @Autowired
-    private Environment env;
-
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
-<span class="fc" id="L39">        return authenticationConfiguration.getAuthenticationManager();</span>
+<span class="fc" id="L35">        return authenticationConfiguration.getAuthenticationManager();</span>
     }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-<span class="fc" id="L44">        return new BCryptPasswordEncoder();</span>
+<span class="fc" id="L40">        return new BCryptPasswordEncoder();</span>
     }
 
     @Bean
     public JwtTokenFilter jwtTokenFilter() {
-<span class="fc" id="L49">        return new JwtTokenFilter(tokenProvider);</span>
+<span class="fc" id="L45">        return new JwtTokenFilter(tokenProvider);</span>
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (Arrays.asList(env.getActiveProfiles()).contains(&quot;test&quot;)) {</span>
-<span class="fc" id="L56">            http.headers().frameOptions().disable();</span>
-        }
-<span class="fc" id="L58">        return http</span>
-<span class="fc" id="L59">                .httpBasic().disable()</span>
-<span class="fc" id="L60">                .cors().and().csrf().disable()</span>
-<span class="fc" id="L61">                .sessionManagement(</span>
-<span class="fc" id="L62">                        session -&gt; session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))</span>
-<span class="fc" id="L63">                .authorizeHttpRequests(at -&gt; at</span>
-<span class="fc" id="L64">                        .requestMatchers(</span>
+        
+<span class="fc" id="L51">        return http</span>
+<span class="fc" id="L52">                .httpBasic().disable()</span>
+<span class="fc" id="L53">                .cors().and().csrf().disable()</span>
+<span class="fc" id="L54">                .sessionManagement(</span>
+<span class="fc" id="L55">                        session -&gt; session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))</span>
+<span class="fc" id="L56">                .authorizeHttpRequests(at -&gt; at</span>
+<span class="fc" id="L57">                        .requestMatchers(</span>
                                 HttpMethod.POST,&quot;/usuarios&quot;,
                                 &quot;/h2-console/**&quot;,
                                 &quot;/auth/**&quot;,
                                 &quot;/auth/signin&quot;,
                                 &quot;/auth/refresh/**&quot;,
                                 &quot;/api/password/**&quot;)
-<span class="fc" id="L71">                        .permitAll()</span>
-<span class="fc" id="L72">                        .anyRequest().authenticated()</span>
+<span class="fc" id="L64">                        .permitAll()</span>
+<span class="fc" id="L65">                        .anyRequest().authenticated()</span>
                 )
-<span class="fc" id="L74">                .apply(new JwtConfigurer(tokenProvider))</span>
-<span class="fc" id="L75">                .and()</span>
-<span class="fc" id="L76">                .build();</span>
+<span class="fc" id="L67">                .apply(new JwtConfigurer(tokenProvider))</span>
+<span class="fc" id="L68">                .and()</span>
+<span class="fc" id="L69">                .build();</span>
     }
 
 }

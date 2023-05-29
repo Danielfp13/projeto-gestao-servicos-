@@ -51,7 +51,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             }
-            if (((HttpServletRequest) request).getRequestURI().contains("/api/reset-password")) {
+ /*           if (((HttpServletRequest) request).getRequestURI().contains("/api/reset-password")) {
                 token = request.getParameter("token");
                 PasswordResetToken resetToken = passwordResetTokenService.findByToken(token);
 
@@ -63,7 +63,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
-            }
+            }*/
 
             chain.doFilter(request, response);
         } catch (TokenExpiredException ex) {

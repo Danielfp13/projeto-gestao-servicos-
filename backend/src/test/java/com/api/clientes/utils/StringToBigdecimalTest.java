@@ -47,7 +47,38 @@ class StringToBigdecimalTest {
         assertNull(actual);
     }
 
+    @Test
+    @DisplayName("Conversão com uma string vazia retorna nulo")
+    void convert_ComStringVazia_RetornaNulo() {
+        String value = "";
+        BigDecimal actual = stringToBigDecimal.convert(value);
+        assertNull(actual);
+    }
 
+    @Test
+    @DisplayName("Conversão com uma string contendo apenas espaços em branco retorna nulo")
+    void convert_ComStringEspacosEmBranco_RetornaNulo() {
+        String value = "    ";
+        BigDecimal actual = stringToBigDecimal.convert(value);
+        assertNull(actual);
+    }
+
+    @Test
+    @DisplayName("Conversão com uma string contendo apenas caracteres inválidos retorna nulo")
+    void convert_ComStringCaracteresInvalidos_RetornaNulo() {
+        String value = "abc";
+        BigDecimal actual = stringToBigDecimal.convert(value);
+        assertNull(actual);
+    }
+
+    @Test
+    @DisplayName("Conversão com um valor muito grande retorna o BigDecimal esperado")
+    void convert_ComValorMuitoGrande_RetornaBigDecimalEsperado() {
+        String value = "1000000000000000000000000000";
+        BigDecimal expected = new BigDecimal("10000000000000000000000000000");
+        BigDecimal actual = stringToBigDecimal.convert(value);
+        assertEquals(expected, actual);
+    }
 }
 
 

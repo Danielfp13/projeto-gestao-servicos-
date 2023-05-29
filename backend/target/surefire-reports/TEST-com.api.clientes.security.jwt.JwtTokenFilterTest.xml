@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.api.clientes.service.ClienteServiceTest" time="0.271" tests="9" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.api.clientes.security.jwt.JwtTokenFilterTest" time="0.326" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -56,13 +56,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="delete" classname="com.api.clientes.service.ClienteServiceTest" time="0.007"/>
-  <testcase name="insert" classname="com.api.clientes.service.ClienteServiceTest" time="0.009"/>
-  <testcase name="findAll" classname="com.api.clientes.service.ClienteServiceTest" time="0.005"/>
-  <testcase name="update" classname="com.api.clientes.service.ClienteServiceTest" time="0.012"/>
-  <testcase name="findTest" classname="com.api.clientes.service.ClienteServiceTest" time="0.018"/>
-  <testcase name="prePersistTest" classname="com.api.clientes.service.ClienteServiceTest" time="0.003"/>
-  <testcase name="findPageTest" classname="com.api.clientes.service.ClienteServiceTest" time="0.01"/>
-  <testcase name="deleteErrorTest" classname="com.api.clientes.service.ClienteServiceTest" time="0.009"/>
-  <testcase name="findObjectNotFound" classname="com.api.clientes.service.ClienteServiceTest" time="0.006"/>
+  <testcase name="doFilter_withValidToken_shouldAuthenticateUser" classname="com.api.clientes.security.jwt.JwtTokenFilterTest" time="0.315"/>
 </testsuite>

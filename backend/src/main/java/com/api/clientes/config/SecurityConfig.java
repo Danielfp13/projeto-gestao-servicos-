@@ -29,10 +29,6 @@ public class SecurityConfig {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-    @Autowired
-    private Environment env;
-
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
@@ -51,10 +47,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
-            http.headers().frameOptions().disable();
-        }
+        
         return http
                 .httpBasic().disable()
                 .cors().and().csrf().disable()

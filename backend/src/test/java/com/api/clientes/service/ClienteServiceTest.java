@@ -176,6 +176,17 @@ class ClienteServiceTest {
         verify(repository, times(1)).save(cliente);
     }
 
+    @Test
+    @DisplayName("Deve definir a data de cadastro antes de persistir o cliente")
+    void prePersistTest() {
+          // Chama o método prePersist
+        cliente.prePersite();
+
+        // Verifica se a data de cadastro foi definida corretamente
+        LocalDate dataAtual = LocalDate.now();
+        assertThat(dataAtual).isEqualTo(cliente.getDataCadastro());
+    }
+
 
 
     void start() {

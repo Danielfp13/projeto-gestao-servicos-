@@ -1,5 +1,7 @@
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\test\java\com\api\clientes\resources\ClienteResourseTest.java
+D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\test\java\com\api\clientes\security\UserSSTest.java
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\test\java\com\api\clientes\service\EmailServiceTest.java
+D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\test\java\com\api\clientes\security\jwt\JwtTokenFilterTest.java
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\test\java\com\api\clientes\service\PasswordResetTokenServiceTest.java
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\test\java\com\api\clientes\service\UsuarioServiceTest.java
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\test\java\com\api\clientes\resources\util\JsonConvertionUtils.java

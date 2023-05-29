@@ -193,6 +193,7 @@ class PasswordResetTokenServiceTest {
         Map<String, String> request = new HashMap<>();
         request.put("token", token);
         request.put("password", password);
+        resetToken.setId(resetToken.getId());
         resetToken.setExpiryDate(LocalDateTime.now().minusDays(1L));
 
         when(repository.findByToken(anyString())).thenReturn(Optional.of(resetToken));

@@ -41,29 +41,29 @@ public class UserSS implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-<span class="nc" id="L44">        return true;</span>
+<span class="fc" id="L44">        return true;</span>
     }
 
     @Override
     public boolean isAccountNonLocked() {
-<span class="nc" id="L49">        return true;</span>
+<span class="fc" id="L49">        return true;</span>
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-<span class="nc" id="L54">        return true;</span>
+<span class="fc" id="L54">        return true;</span>
     }
 
     @Override
     public boolean isEnabled() {
-<span class="nc" id="L59">        return true;</span>
+<span class="fc" id="L59">        return true;</span>
     }
 
     public Integer getId() {
 <span class="fc" id="L63">        return id;</span>
     }
     public boolean hasRole(Perfil perfil) {
-<span class="nc" id="L66">        return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));</span>
+<span class="fc" id="L66">        return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
