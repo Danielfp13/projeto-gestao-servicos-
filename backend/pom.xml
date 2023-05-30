@@ -114,6 +114,12 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>com/api/clientes/resources/exception/ApiErros.class</exclude>
+                        <exclude>com/api/clientes/resources/exception/ApplicationControllerAdvice.class</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

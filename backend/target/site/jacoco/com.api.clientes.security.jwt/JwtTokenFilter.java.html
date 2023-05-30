@@ -2,7 +2,6 @@
 
 import com.api.clientes.Service.PasswordResetTokenService;
 import com.api.clientes.Service.UserService;
-import com.api.clientes.model.entity.PasswordResetToken;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,15 +10,11 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 public class JwtTokenFilter extends GenericFilterBean {
 
@@ -32,49 +27,30 @@ public class JwtTokenFilter extends GenericFilterBean {
     @Autowired
     PasswordResetTokenService passwordResetTokenService;
 
-<span class="fc" id="L35">    public JwtTokenFilter(JwtTokenProvider tokenProvider) {</span>
-<span class="fc" id="L36">        this.tokenProvider = tokenProvider;</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L30">    public JwtTokenFilter(JwtTokenProvider tokenProvider) {</span>
+<span class="fc" id="L31">        this.tokenProvider = tokenProvider;</span>
+<span class="fc" id="L32">    }</span>
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-
-<span class="fc" id="L43">        String token = tokenProvider.resolveToken((HttpServletRequest) request);</span>
-<span class="fc" id="L44">        HttpServletResponse res = null;</span>
+<span class="fc" id="L37">        String token = tokenProvider.resolveToken((HttpServletRequest) request);</span>
+<span class="fc" id="L38">        HttpServletResponse res = null;</span>
         try {
-<span class="fc" id="L46">            HttpServletRequest req = (HttpServletRequest) request;</span>
-<span class="fc" id="L47">            res = (HttpServletResponse) response;</span>
-<span class="pc bpc" id="L48" title="1 of 4 branches missed.">            if (token != null &amp;&amp; tokenProvider.validateToken(token)) {</span>
-<span class="fc" id="L49">                Authentication auth = tokenProvider.getAuthentication(token);</span>
-<span class="pc bpc" id="L50" title="1 of 2 branches missed.">                if (auth != null) {</span>
-<span class="fc" id="L51">                    SecurityContextHolder.getContext().setAuthentication(auth);</span>
+<span class="fc" id="L40">            HttpServletRequest req = (HttpServletRequest) request;</span>
+<span class="fc" id="L41">            res = (HttpServletResponse) response;</span>
+<span class="pc bpc" id="L42" title="1 of 4 branches missed.">            if (token != null &amp;&amp; tokenProvider.validateToken(token)) {</span>
+<span class="fc" id="L43">                Authentication auth = tokenProvider.getAuthentication(token);</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">                if (auth != null) {</span>
+<span class="fc" id="L45">                    SecurityContextHolder.getContext().setAuthentication(auth);</span>
                 }
             }
- /*           if (((HttpServletRequest) request).getRequestURI().contains(&quot;/api/reset-password&quot;)) {
-                token = request.getParameter(&quot;token&quot;);
-                PasswordResetToken resetToken = passwordResetTokenService.findByToken(token);
-
-                if (resetToken != null &amp;&amp; resetToken.getExpiryDate().isAfter(LocalDateTime.now())) {
-                    UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(resetToken.getUsuario().getUsername());
-
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
-            }*/
-
-<span class="fc" id="L68">            chain.doFilter(request, response);</span>
-<span class="nc" id="L69">        } catch (TokenExpiredException ex) {</span>
-<span class="nc" id="L70">            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);</span>
-<span class="nc" id="L71">            res.setContentType(&quot;application/json&quot;);</span>
-<span class="nc" id="L72">            res.getWriter().write(&quot;{\&quot;message\&quot;: \&quot;Token expirado\&quot;}&quot;);</span>
-<span class="fc" id="L73">        }/* catch (TokenInvalidException ex) {</span>
-            res.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            res.setContentType(&quot;application/json&quot;);
-            res.getWriter().write(&quot;{\&quot;message\&quot;: \&quot;Token inválido\&quot;}&quot;);
-        }*/
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L48">            chain.doFilter(request, response);</span>
+<span class="nc" id="L49">        } catch (TokenExpiredException ex) {</span>
+<span class="nc" id="L50">            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);</span>
+<span class="nc" id="L51">            res.setContentType(&quot;application/json&quot;);</span>
+<span class="nc" id="L52">            res.getWriter().write(&quot;{\&quot;message\&quot;: \&quot;Token expirado\&quot;}&quot;);</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

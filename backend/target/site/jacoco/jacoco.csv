@@ -29,5 +29,4 @@ clientes,com.api.clientes.model.entity,PasswordResetToken,0,46,0,0,0,7,0,10,0,10
 clientes,com.api.clientes.model.enums,Perfil,7,63,2,4,2,13,2,6,0,5
 clientes,com.api.clientes.utils,StringToBigdecimal,0,32,0,4,0,7,0,4,0,2
 clientes,com.api.clientes.resources.exception,AppliacationControllerAdvice,18,23,0,0,4,4,1,3,1,3
-clientes,com.api.clientes.resources.exception,ApiErros,17,14,0,0,3,4,1,2,1,2
 clientes,com.api.clientes.dto,ServicoPrestadoDto,0,46,0,0,0,7,0,10,0,10
