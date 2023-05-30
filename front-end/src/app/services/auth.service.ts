@@ -12,6 +12,7 @@ export class AuthService {
 
   urlApi: string = environment.apiURLBase + '/usuarios';
   tokenURL: string = environment.apiURLBase + environment.obterTokenUrl;
+  urlBasic: string = environment.apiURLBase;
   jwtHelper: JwtHelperService = new JwtHelperService();
 
 
@@ -36,7 +37,7 @@ export class AuthService {
     const headers = {
       Authorization: `${this.obterRefleshToken()}`
     };
-    return this.http.put<any>(`http://localhost:8080/auth/refresh/${userName}`, {}, { headers });
+    return this.http.put<any>(`${this.urlBasic}/auth/refresh/${userName}`, {}, { headers });
   }
 
   obterToken() {
@@ -63,19 +64,12 @@ export class AuthService {
       const expired = this.jwtHelper.isTokenExpired(token);
       if (expired) {
         const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
-        console.log("1 - expirated " + expirationDate)
         const currentDate = new Date();
         const timeDiff = (currentDate.getTime() - (expirationDate ?? currentDate).getTime()) / 1000; // Diferença de tempo em segundos
         const minutosInativos: number = 5;
-        console.log("1 - minuto inativos: " + minutosInativos)
-        console.log("1 - time diff: " + minutosInativos)
-        console.log("2 - expirated: " + expirationDate)
+ 
         
         if (timeDiff > minutosInativos * 60) {
-          console.log("2 - já faz 5 minutos:")
-          console.log("2 - minuto inativos: -- " + minutosInativos)
-          console.log("2 - time diff: -- " + minutosInativos)
-          console.log("3 - expirated: -- " + expirationDate)
           localStorage.removeItem("access_token");
           return false; // Retorna false apenas se a diferença de tempo for maior que 5 minutos (minutosInativos * 60 segundos)
         }
