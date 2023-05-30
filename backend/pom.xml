@@ -116,6 +116,7 @@
                 </executions>
                 <configuration>
                     <excludes>
+                        <exclude>com/api/clientes/security/jwt/**</exclude>
                         <exclude>com/api/clientes/resources/exception/ApiErros.class</exclude>
                         <exclude>com/api/clientes/resources/exception/ApplicationControllerAdvice.class</exclude>
                     </excludes>

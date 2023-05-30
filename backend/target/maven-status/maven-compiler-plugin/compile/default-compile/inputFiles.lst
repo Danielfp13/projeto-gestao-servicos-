@@ -1,4 +1,3 @@
-D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\main\java\com\api\clientes\resources\exception\AppliacationControllerAdvice.java
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\main\java\com\api\clientes\security\jwt\JwtTokenProvider.java
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\main\java\com\api\clientes\resources\AuthController.java
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\main\java\com\api\clientes\model\entity\Cliente.java
@@ -34,3 +33,4 @@ D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\main
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\main\java\com\api\clientes\security\UserSS.java
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\main\java\com\api\clientes\resources\ServicoPrestadoResource.java
 D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\main\java\com\api\clientes\model\entity\Usuario.java
+D:\desenvolvimento\ws-angular-spring\projeto-servico-prestado-6\backend\src\main\java\com\api\clientes\resources\exception\ApplicationControllerAdvice.java
