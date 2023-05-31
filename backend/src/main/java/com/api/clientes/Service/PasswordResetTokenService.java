@@ -40,6 +40,7 @@ public class PasswordResetTokenService {
         System.out.println(resetToken.getToken());
         System.out.println(resetToken.getExpiryDate());
         System.out.println(resetToken.getUsuario());
+        System.out.println(resetToken.getToken().length());
         return repository.save(resetToken);
     }
 
