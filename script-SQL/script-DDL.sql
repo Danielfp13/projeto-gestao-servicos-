@@ -3,9 +3,9 @@ BEGIN;
 CREATE TABLE IF NOT EXISTS usuario
 (
     id SERIAL PRIMARY KEY,
-    nome VARCHAR(200),
+    nome VARCHAR(255),
     password VARCHAR(255),
-    username VARCHAR(200) UNIQUE
+    username VARCHAR(255) UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS perfis
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS cliente
     id SERIAL PRIMARY KEY,
     cpf VARCHAR(14) NOT NULL,
     data_cadastro DATE,
-    nome VARCHAR(150) NOT NULL
+    nome VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS servico_prestado

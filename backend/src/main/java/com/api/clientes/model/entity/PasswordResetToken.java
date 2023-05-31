@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,5 +25,5 @@ public class PasswordResetToken {
     private Usuario usuario;
 
     private LocalDateTime expiryDate;
-    }
+}
 
