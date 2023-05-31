@@ -36,6 +36,8 @@ public class PasswordResetTokenService {
         resetToken.setUsuario(usuario);
         resetToken.setToken(token);
         resetToken.setExpiryDate(LocalDateTime.now().plusHours(1L));
+        System.out.println("TOKEN:");
+        System.out.println(resetToken.getToken());
         return repository.save(resetToken);
     }
 
