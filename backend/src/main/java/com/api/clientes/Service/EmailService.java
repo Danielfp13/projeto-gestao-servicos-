@@ -24,7 +24,7 @@ public class EmailService {
             message.setText(String.format(
                     "Olá %s,\n\n" + "Recebemos uma solicitação para redefinir a senha associada" + " à sua conta.\n" +
                             "Para prosseguir com a redefinição, por favor, clique no link abaixo:" + "\n\n" +
-                            "http://localhost:4200/forgot?token=%s\n\n" + "Este link terá validade de 1 hora. Caso não " +
+                            "https://curious-marshmallow-9045d5.netlify.app/forgot?token=%s\n\n" + "Este link terá validade de 1 hora. Caso não " +
                             "tenha solicitado a redefinição de senha," + " por favor, ignore este e-mail e " +
                             "certifique-se de manter sua conta segura.\n\n" + "Atenciosamente,\n" + "Equipe de Suporte.",
                     usuario.getNome(), token));
