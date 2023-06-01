@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +37,16 @@ public class PasswordResetTokenService {
         PasswordResetToken resetToken = new PasswordResetToken();
         resetToken.setUsuario(usuario);
         resetToken.setToken(token);
-        resetToken.setExpiryDate(LocalDateTime.now().plusHours(1L));
+        //resetToken.setExpiryDate(LocalDateTime.now().plusHours(1L));
+        // Obtém a data e hora atual no fuso horário de São Paulo
+        ZoneId fusoHorarioDeSaoPaulo = ZoneId.of("America/Sao_Paulo");
+        ZonedDateTime now = ZonedDateTime.now(fusoHorarioDeSaoPaulo);
+        ZonedDateTime expiryDateTime = now.plusHours(1L);
+
+        // Converte para LocalDateTime (sem informações de fuso horário)
+        LocalDateTime expiryLocalDateTime = expiryDateTime.toLocalDateTime();
+
+        resetToken.setExpiryDate(expiryLocalDateTime);
         return repository.save(resetToken);
     }
 
