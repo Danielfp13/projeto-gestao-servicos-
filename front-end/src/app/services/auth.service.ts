@@ -23,6 +23,8 @@ export class AuthService {
   }
 
   tentarLogar(usuario: Usuario): Observable<any> {
+    console.log("oiiiiiiii")
+    console.log( `${this.tokenURL}`);
     return this.http.post(`${this.tokenURL}`, usuario);
   }
 
