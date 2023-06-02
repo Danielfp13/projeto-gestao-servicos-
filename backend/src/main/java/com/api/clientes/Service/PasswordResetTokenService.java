@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -63,11 +64,7 @@ public class PasswordResetTokenService {
         }
 
         PasswordResetToken resetToken = this.findByToken(token);
-        System.out.println("data banco: " + resetToken.getExpiryDate() );
-        System.out.println("local date: " + LocalDateTime.now());
-        System.out.println(resetToken.getExpiryDate().isBefore(LocalDateTime.now()));
-        if (resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-            System.out.println("estadando token vencido");
+        if (resetToken.getExpiryDate().isBefore(ChronoLocalDateTime.from(ZonedDateTime.now()))) {
             this.delete(resetToken);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "O token está vencido.");
         }
