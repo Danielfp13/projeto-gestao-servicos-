@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -62,8 +63,11 @@ public class PasswordResetTokenService {
         }
 
         PasswordResetToken resetToken = this.findByToken(token);
-
+        System.out.println("data banco: " + resetToken.getExpiryDate() );
+        System.out.println("local date: " + LocalDateTime.now());
+        System.out.println(resetToken.getExpiryDate().isBefore(LocalDateTime.now()));
         if (resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+            System.out.println("estadando token vencido");
             this.delete(resetToken);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "O token está vencido.");
         }
