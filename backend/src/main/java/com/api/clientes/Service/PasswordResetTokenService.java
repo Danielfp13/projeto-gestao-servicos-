@@ -64,7 +64,14 @@ public class PasswordResetTokenService {
         }
 
         PasswordResetToken resetToken = this.findByToken(token);
-        if (resetToken.getExpiryDate().isBefore(ChronoLocalDateTime.from(ZonedDateTime.now()))) {
+        System.out.println("data banco: " + resetToken.getExpiryDate() );
+        System.out.println("local date: " + LocalDateTime.now());
+        System.out.println(resetToken.getExpiryDate().isBefore(LocalDateTime.now()));
+        ZoneId fusoHorarioDeSaoPaulo = ZoneId.of("America/Sao_Paulo");
+        ZonedDateTime now = ZonedDateTime.now(fusoHorarioDeSaoPaulo);
+        LocalDateTime currentDateTime = now.toLocalDateTime();
+        if (resetToken.getExpiryDate().isBefore(currentDateTime)) {
+            System.out.println("estadando token vencido");
             this.delete(resetToken);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "O token está vencido.");
         }
