@@ -15,8 +15,8 @@ export class EmailService {
 
   constructor(private http: HttpClient) { }
 
-  enviarEmail(username: string) {
-    const body = { email: username};
+  enviarEmail(username: string, urlFront: string) {
+    const body = { email: username, urlFront: urlFront};
     return this.http.post<any>(`${this.apiUrl}/forgot`, body);
   }
 

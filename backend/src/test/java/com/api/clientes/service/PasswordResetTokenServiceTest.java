@@ -57,13 +57,13 @@ class PasswordResetTokenServiceTest {
     void forgotPassword() throws MessagingException {
         Map<String, String> request = new HashMap<>();
         request.put("email", "ana@email.com");
+        request.put("urlFront", "http://localhost:4200");
         when(usuarioService.findByUsername(anyString())).thenReturn(usuario);
         when(jwtTokenProvider.generatePasswordResetToken(usuario)).thenReturn(resetToken.getToken());
         when(repository.save(any(PasswordResetToken.class))).thenReturn(resetToken);
         passwordResetTokenService.forgotPassword(request);
-        verify(emailService, times(1)).enviarEmailRedefinicaoSenha(usuario, resetToken.getToken());
+        verify(emailService, times(1)).enviarEmailRedefinicaoSenha(usuario, resetToken.getToken(),request.get("urlFront"));
     }
-
 
 
     @Test
@@ -157,7 +157,7 @@ class PasswordResetTokenServiceTest {
         Map<String, String> request = new HashMap<>();
         request.put("token", token);
 
-        ResponseStatusException exception =  assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             passwordResetTokenService.resetPassword(request);
         });
 
@@ -175,7 +175,7 @@ class PasswordResetTokenServiceTest {
         request.put("token", token);
         request.put("password", password);
 
-        ResponseStatusException exception =  assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             passwordResetTokenService.resetPassword(request);
         });
 
@@ -199,7 +199,7 @@ class PasswordResetTokenServiceTest {
         when(repository.findByToken(anyString())).thenReturn(Optional.of(resetToken));
         doNothing().when(repository).delete(resetToken);
 
-        ResponseStatusException exception =  assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             passwordResetTokenService.resetPassword(request);
         });
 

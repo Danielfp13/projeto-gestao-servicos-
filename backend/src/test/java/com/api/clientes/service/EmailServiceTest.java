@@ -41,9 +41,10 @@ public class EmailServiceTest {
     @Test
     @DisplayName("Deve enviar um email de redefinição de senha")
     public void EnviarEmailRedefinicaoSenhaTest() {
+        String urlFront = "http://localhost:4200";
         doNothing().when(emailSender).send(any(SimpleMailMessage.class));
 
-        emailService.enviarEmailRedefinicaoSenha(usuario, token);
+        emailService.enviarEmailRedefinicaoSenha(usuario, token, urlFront);
 
         verify(emailSender).send(any(SimpleMailMessage.class));
     }
@@ -53,9 +54,10 @@ public class EmailServiceTest {
     public void EnviarEmailRedefinicaoSenhaExceptionTest() {
         MailException mailException = new MailException("Failed to send email") {};
         doThrow(mailException).when(emailSender).send(any(SimpleMailMessage.class));
+        String urlFront = "http://localhost:4200";
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            emailService.enviarEmailRedefinicaoSenha(usuario, token);
+            emailService.enviarEmailRedefinicaoSenha(usuario, token, urlFront);
         });
 
         assertThat(exception.getReason()).isEqualTo("Erro ao enviar email.");

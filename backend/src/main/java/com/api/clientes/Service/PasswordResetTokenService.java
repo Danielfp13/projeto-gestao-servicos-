@@ -27,9 +27,10 @@ public class PasswordResetTokenService {
 
     public void forgotPassword(Map<String, String> request) {
         String email = request.get("email");
+        String urlFront = request.get("urlFront");
         Usuario usuario = usuarioService.findByUsername(email);
         PasswordResetToken token = this.createToken(usuario);
-        emailService.enviarEmailRedefinicaoSenha(usuario, token.getToken()); // enviar e-mail com link para redefinição de senha
+        emailService.enviarEmailRedefinicaoSenha(usuario, token.getToken(), urlFront); // enviar e-mail com link para redefinição de senha
     }
 
     public PasswordResetToken createToken(Usuario usuario) {

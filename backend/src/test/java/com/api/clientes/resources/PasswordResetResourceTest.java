@@ -57,6 +57,7 @@ class PasswordResetResourceTest {
         verify(passwordResetTokenService, times(1)).forgotPassword(request);
     }
 
+
     @Test
     @DisplayName("Deve altera a senha do usuário")
     void resetPassword() throws Exception {

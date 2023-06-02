@@ -46,8 +46,8 @@ export class LoginComponent {
   }
 
   forgotPassword() {
-
-    this.emailService.enviarEmail(this.usuario.username).subscribe({
+    const urlFront = window.location.href;
+    this.emailService.enviarEmail(this.usuario.username, urlFront).subscribe({
       next: (response) => {
         this.mensagem = "Um e-mail foi enviado com sucesso para o endereço fornecido. Por favor, verifique sua caixa de entrada.";
         this.errors = [];
