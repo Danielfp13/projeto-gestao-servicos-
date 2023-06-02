@@ -46,7 +46,8 @@ export class LoginComponent {
   }
 
   forgotPassword() {
-    const urlFront = window.location.href;
+    const urlFront = window.location.href.split('/login')[0]; // Obter a parte da URL antes de "/login"
+
     this.emailService.enviarEmail(this.usuario.username, urlFront).subscribe({
       next: (response) => {
         this.mensagem = "Um e-mail foi enviado com sucesso para o endereço fornecido. Por favor, verifique sua caixa de entrada.";
@@ -55,7 +56,7 @@ export class LoginComponent {
         setTimeout(() => {
           this.cadastrando = false;
           this.esqueceuSenha = false;
-          this.mensagem="";
+          this.mensagem = "";
         }, 3000)
       },
       error: (responseError) => {
