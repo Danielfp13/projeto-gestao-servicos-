@@ -12,12 +12,10 @@ export class EmailService {
   private apiUrl = `${environment.apiURLBase}/api/password`; 
   jwtHelper: JwtHelperService = new JwtHelperService();
 
-
   constructor(private http: HttpClient) { }
 
   enviarEmail(username: string, urlFront: string) {
     const body = { email: username, urlFront: urlFront};
-    console.log(urlFront);
     return this.http.post<any>(`${this.apiUrl}/forgot`, body);
   }
 
