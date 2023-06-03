@@ -23,9 +23,10 @@ public class WebConfig {
 
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200",
-                "https://6476734674ab4123be18b818--curious-marshmallow-9045d5.netlify.app/",
-                "https://curious-marshmallow-9045d5.netlify.app/"));
+        corsConfiguration.setAllowedOrigins(List.of(
+                "http://localhost:4200",
+                "https://servico-prestado.netlify.app"
+        ));
         corsConfiguration.setAllowedHeaders(all);
         corsConfiguration.setAllowedMethods(all);
         corsConfiguration.setAllowCredentials(true);
