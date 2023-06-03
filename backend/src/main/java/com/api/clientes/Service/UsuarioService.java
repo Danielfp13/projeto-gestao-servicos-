@@ -23,7 +23,7 @@ public class UsuarioService {
 
     public Usuario insert(Usuario usuario) {
         if (existsByUsername(usuario.getUsername())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe usuário com o login " + usuario.getUsername() + "cadastrado");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Já existe usuário com o login " + usuario.getUsername() + " cadastrado.");
         } else {
             usuario.setId(null);
             usuario.setPassword(encoder.encode(usuario.getPassword()));
