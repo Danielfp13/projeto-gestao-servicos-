@@ -1,0 +1,28 @@
+/* Estilos para o card centralizado */
+.card {
+    margin: 0 auto;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  
+  /* Estilos para os botões */
+  .btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+  }
+  
+  /* Estilos para a mensagem de nenhum usuário encontrado */
+  .no-user {
+    margin-top: 20px;
+    color: #999;
+  }
+  

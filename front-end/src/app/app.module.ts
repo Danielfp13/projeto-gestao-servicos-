@@ -21,8 +21,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { PtBrMatPaginatorIntl } from './clientes/clientes-lista/traducao-table';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
+import { UsuarioService } from './services/usuario.service';
+import { UsuarioModule } from './usuario/usuario/usuario.module';
+
+
 
 
 
@@ -32,8 +35,7 @@ import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
     HomeComponent,
     LoginComponent,
     LayoutComponent,
-    EsqueciSenhaComponent
-    
+    EsqueciSenhaComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +48,7 @@ import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
     NgxPaginationModule,  
     MatPaginatorModule,
     MatFormFieldModule,
+    UsuarioModule,
     //BrowserAnimationsModule 
 
   ],
@@ -53,6 +56,7 @@ import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
     ClientesService,
     ServicoPrestadoService,
     AuthService,
+    UsuarioService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

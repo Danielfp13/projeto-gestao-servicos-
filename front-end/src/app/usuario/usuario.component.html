@@ -1,0 +1,87 @@
+<div class="row">
+  <div class="col-md-12">
+      <div class="alert alert-{{cor}}" role="alert" *ngIf="mensagem">
+          {{mensagem}}
+      </div>
+  </div>
+</div>
+<div *ngIf="!editarForm && !alterarSenhaForm" class="card text-center">
+  <div class="card-body">
+    <h1 class="card-title">Meus Dados</h1>
+
+    <div *ngIf="usuario" class="user-details">
+      <p><strong>Nome:</strong> {{ usuario.nome }}</p>
+      <p><strong>Email:</strong> {{ usuario.username }}</p>
+      <p> <a href="#" (click)="abrirFormularioAlterarSenha($event)"> <i class="fas fa-lock"></i>
+          Alterar Senha</a></p>
+
+      <button class="btn btn-primary" (click)="editarDados()"><i class="fas fa-edit"></i> Editar Dados</button>
+      <button class="btn btn-danger ml-2" (click)="excluirConta()"><i class="fas fa-trash"></i> Excluir Conta</button>
+    </div>
+
+    <div *ngIf="!usuario" class="no-user">
+      <p>Nenhum usuário encontrado.</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="editarForm" class="edit-form">
+  <h1>Editar Dados</h1>
+  <form (ngSubmit)="salvarDados()">
+    <div class="form-group">
+      <label for="nome">Nome:</label>
+      <input type="text" class="form-control" id="nome" [(ngModel)]="usuario.nome" name="nome">
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="username" [(ngModel)]="usuario.username" name="username">
+    </div>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+    <button type="button" class="btn btn-secondary ml-2" (click)="cancelarEdicao()"><i class="fas fa-times"></i>
+      Cancelar</button>
+  </form>
+</div>
+
+<div *ngIf="alterarSenhaForm" class="edit-form">
+  <h1>Alterar Senha</h1>
+  <form (ngSubmit)="salvarNovaSenha()">
+    <div class="form-group">
+      <label for="senhaAtual">Senha Atual:</label>
+      <input type="password" class="form-control" id="senhaAtual" [(ngModel)]="senhaAtual" name="senhaAtual">
+    </div>
+    <div class="form-group">
+      <label for="novaSenha">Nova Senha:</label>
+      <input type="password" class="form-control" id="novaSenha" [(ngModel)]="novaSenha" name="novaSenha">
+    </div>
+    <div class="form-group">
+      <label for="confirmarNovaSenha">Confirmar Nova Senha:</label>
+      <input type="password" class="form-control" id="confirmarNovaSenha" [(ngModel)]="confirmarNovaSenha"
+        name="confirmarNovaSenha">
+    </div>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+    <button type="button" class="btn btn-secondary ml-2" (click)="cancelarAlteracaoSenha()"><i class="fas fa-times"></i>
+      Cancelar</button>
+  </form>
+</div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+ aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Confirmação</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Deseja excluir sua conta? Ao fazer isso, todos os seus dados serão excluídos permanentemente.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmarExclusao()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

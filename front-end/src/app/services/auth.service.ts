@@ -23,8 +23,6 @@ export class AuthService {
   }
 
   tentarLogar(usuario: Usuario): Observable<any> {
-    console.log("oiiiiiiii")
-    console.log( `${this.tokenURL}`);
     return this.http.post(`${this.tokenURL}`, usuario);
   }
 
@@ -92,6 +90,16 @@ export class AuthService {
     const usuario = this.jwtHelper.decodeToken(token).usuario;
     return usuario;
   }
+
+  getUserName() {
+    let tokenString = localStorage.getItem('access_token');
+    if (tokenString) {
+      const refleshToken = JSON.parse(tokenString).userName;
+      return refleshToken;
+    }
+    return null;
+  }
+
 
   getRole() {
     const token = this.obterToken();

@@ -15,9 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -29,7 +31,9 @@ import java.util.stream.Collectors;
 
 import static com.api.clientes.resources.util.JsonConvertionUtils.asJsonString;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -92,6 +96,7 @@ class UsuarioResourseTest {
     @DisplayName("Deve lançar erro de valiação quando não houver dados suficientes.")
     public void validationExceptionWhenInsufficientDataTest() throws Exception {
 
+        // Cria um mapa com os campos obrigatórios
         Map<String, String> usuarioInsert = new HashMap<>();
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -103,7 +108,7 @@ class UsuarioResourseTest {
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("erros", Matchers.hasSize(3)))
                 .andExpect(jsonPath("$.erros[*]", Matchers.containsInAnyOrder(
-                        "O campo nome é obrigatório", "O campo login é obrigatório",
+                        "O campo nome é obrigatório", "O campo email é obrigatório",
                         "O campo senha é obrigatório")));
     }
 
@@ -181,6 +186,108 @@ class UsuarioResourseTest {
         return tokenProvider.createAccessToken(usuario.getUsername(), usuario.getNome(), usuario.getPerfis()
                         .stream().map(x -> Perfil.toEnum(x.getCod()).getDescricao()).collect(Collectors.toList()))
                 .getAccesToken();
+    }
+
+
+    @Test
+    @DisplayName("Deve atualizar um usuário")
+    void update() throws Exception {
+        // Arrange
+        int id = 1;
+
+        Map<String, String> usuarioAtualizado = new HashMap<>();
+
+        usuarioAtualizado.put("username", "ana@email.com");
+        usuarioAtualizado.put("nome", "Ana Maria");
+
+        when(usuarioService.update(any(), anyInt())).thenReturn(usuario);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(USUARIO_API_URI_PATH.concat("/" + id))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(asJsonString(usuarioAtualizado))
+                .header("Authorization", "Bearer " + accessToken);
+
+
+        // Act & Assert
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(id))
+                .andExpect(jsonPath("nome").value(usuario.getNome()))
+                .andExpect(jsonPath("username").value(usuario.getUsername()))
+                .andExpect(jsonPath("password").value(usuario.getPassword()));
+       // Mockito.verify(usuarioService, Mockito.times(1)).update(usuario, id);
+    }
+
+    @Test
+    @DisplayName("Deve alterar a senha do usuário")
+    void changePassword() throws Exception {
+        // Arrange
+        Map<String, String> request = new HashMap<>();
+
+        request.put("senhaAtual", "MinhaSenha#1");
+        request.put("novaSenha", "NovaSeha*1");
+        request.put("confirmaNovaSenha", "NovaSenha*1");
+        request.put("email", "ana@email.com");
+
+        // Configurar o comportamento do serviço
+        doNothing().when(usuarioService).changePassword(any());
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post(USUARIO_API_URI_PATH.concat("/alterar-senha"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(request))
+                .header("Authorization", "Bearer " + accessToken);
+
+        // Act & Assert
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk());
+        Mockito.verify(usuarioService, Mockito.times(1)).changePassword(request);
+    }
+
+    @Test
+    @DisplayName("Deve buscar um usuário pelo nome de usuário")
+    void findByUsername() throws Exception {
+        // Arrange
+        String username = "usuario";
+
+        Usuario usuario = new Usuario();
+        usuario.setId(1);
+        usuario.setUsername(username);
+        usuario.setNome("Nome do Usuário");
+
+        when(usuarioService.findByUsername(username)).thenReturn(usuario);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get(USUARIO_API_URI_PATH.concat("/username/" + username))
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+
+        // Act & Assert
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(usuario.getId()))
+                .andExpect(jsonPath("username").value(usuario.getUsername()))
+                .andExpect(jsonPath("nome").value(usuario.getNome()));
+    }
+
+    @Test
+    @DisplayName("Deve excluir um usuário pelo ID")
+    void deleteById() throws Exception {
+        // Arrange
+        int id = 1;
+
+        doNothing().when(usuarioService).deleteById(id);
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .delete(USUARIO_API_URI_PATH.concat("/" + id))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+
+        // Act & Assert
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isNoContent());
+        verify(usuarioService, times(1)).deleteById(id);
     }
 
     private void start() {
