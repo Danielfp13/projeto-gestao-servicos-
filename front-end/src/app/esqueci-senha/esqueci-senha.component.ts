@@ -39,7 +39,8 @@ export class EsqueciSenhaComponent {
         },7000)
       },
       error => {
-        this.mensagem = "Desculpe, este link de recuperação de senha não é mais válido.\nO token expirou ou o link não existe mais.\nPor favor, solicite uma nova recuperação de senha.";
+        console.log(error.error.erros)
+        this.mensagem = error.error.erros;
         this.corMensagem = 'danger';
         setTimeout(() => {
           this.router.navigate(['/login']);

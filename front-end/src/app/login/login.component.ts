@@ -74,6 +74,8 @@ export class LoginComponent {
         this.router.navigate(['/home']);
       },
       error: (responseError) => {
+        this.errors = [];
+        this.mensagem = ""; 
         this.errors = ['Usuarios e ou senha incorretos!'];
       }
     })
@@ -85,6 +87,7 @@ export class LoginComponent {
     this.esqueceuSenha = false;
     this.mensagem = "";
     this.errors = [];
+    this.resetarCampos();
   }
 
   preparaEsqueceuSenha(event: any) {
@@ -93,6 +96,7 @@ export class LoginComponent {
     this.cadastrando = false;
     this.mensagem = "";
     this.errors = [];
+    this.resetarCampos();
   }
 
   cancelaCadastro() {
@@ -100,6 +104,13 @@ export class LoginComponent {
     this.esqueceuSenha = false;
     this.errors = [];
     this.mensagem = "";
+    this.resetarCampos();
   }
 
+resetarCampos(){
+  this.usuario.nome = '';
+  this.usuario.username = '';
+  this.usuario.password = '';
+  
+}
 }

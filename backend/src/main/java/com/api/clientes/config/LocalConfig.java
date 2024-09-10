@@ -20,6 +20,5 @@ public class LocalConfig {
     public void startBdTest() {
         Usuario usuario = new Usuario(1, "ana@email.com", "Ana Maria", encoder.encode("123"));
         repository.save(usuario);
-
     }
 }

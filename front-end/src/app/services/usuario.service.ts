@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Usuario } from '../login/usuario';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { PaginaUsuario } from '../usuario/pagina-usuario';
+import { PaginaUsuario } from '../usuario/usuario-form/pagina-usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -14,22 +14,30 @@ export class UsuarioService {
 
   apiURL: string = environment.apiURLBase;
 
+  addPerfilAdmin(id: number): Observable<any> {
+    return this.http.post<Usuario>(`${this.apiURL}/usuarios/perfil-admin/${id}`, null);
+  }
+
+  removeAdmin(id: number): Observable<any> {
+    return this.http.post<Usuario>(`${this.apiURL}/usuarios/remover-perfil-admin/${id}`, null);
+  }
+
 
   alterarUsuario(username: string, nome: string, id: number): Observable<any> {
-    const body = { username: username, nome: nome};
+    const body = { username: username, nome: nome };
     return this.http.put<Usuario>(`${this.apiURL}/usuarios/${id}`, body);
   }
 
   alterarSenha(senhaAtual: string, novaSenha: string,
-     confirmaNovaSenha: string, email: string ): Observable<any> {
-      console.log("metodo certo")
-    const body = { senhaAtual: senhaAtual, novaSenha: novaSenha,
-       confirmaNovaSenha: confirmaNovaSenha, email: email};
+    confirmaNovaSenha: string, email: string): Observable<any> {
+    const body = {
+      senhaAtual: senhaAtual, novaSenha: novaSenha,
+      confirmaNovaSenha: confirmaNovaSenha, email: email
+    };
     return this.http.post<Usuario>(`${this.apiURL}/usuarios/alterar-senha`, body);
   }
 
   usuarioByUsername(username: string): Observable<Usuario> {
-    console.log(username)
     return this.http.get<Usuario>(`${this.apiURL}/usuarios/username/${username}`);
   }
 

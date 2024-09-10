@@ -48,6 +48,13 @@ public class UsuarioResourse {
         return ResponseEntity.ok(usuario);
     }
 
+    @PostMapping("/remover-perfil-admin/{id}")
+    public ResponseEntity<Usuario> removeAdmin(@PathVariable Integer id) {
+        System.out.println("cheguei no controller!!!");
+        Usuario usuario = service.removeAdmin(id);
+        return ResponseEntity.ok(usuario);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Usuario>findById(@PathVariable Integer id){
         return ResponseEntity.ok(service.findById(id));

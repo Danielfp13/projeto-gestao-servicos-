@@ -35,6 +35,7 @@ public class UsuarioService {
             usuario.setPassword(encoder.encode(usuario.getPassword()));
             return repository.save(usuario);
         }
+
     }
 
     public boolean existsByUsername(String username) {
@@ -53,6 +54,8 @@ public class UsuarioService {
         if (!usuario.getPerfis().contains(Perfil.ADMIN)) {
             usuario.addPerfil(Perfil.ADMIN);
             usuario = repository.save(usuario);
+        }else{
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Esse usuário já possui o perfil ADMIN.");
         }
         return usuario;
     }
@@ -122,4 +125,16 @@ public class UsuarioService {
         }
         return true;
     }
+
+    public Usuario removeAdmin(Integer id) {
+        Usuario usuario = findById(id);
+        if (usuario.getPerfis().contains(Perfil.ADMIN)) {
+            usuario.removePerfil(Perfil.ADMIN);
+            usuario = repository.save(usuario);
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe usuário com perfil ADMIN.");
+        }
+        return usuario;
+    }
+
 }

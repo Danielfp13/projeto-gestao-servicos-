@@ -150,7 +150,7 @@ class UsuarioResourseTest {
                 .param("page", "0")
                 .param("size", "5")
                 .param("direction", "ASC")
-                .param("orderBy", "nome");;
+                .param("orderBy", "nome");
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())

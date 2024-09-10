@@ -23,7 +23,9 @@ import { PtBrMatPaginatorIntl } from './clientes/clientes-lista/traducao-table';
 
 import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
 import { UsuarioService } from './services/usuario.service';
-import { UsuarioModule } from './usuario/usuario/usuario.module';
+import { UsuarioModule } from './usuario/usuario.module';
+import { UserUpdateService } from './services/userupdate.service';
+
 
 
 
@@ -57,6 +59,7 @@ import { UsuarioModule } from './usuario/usuario/usuario.module';
     ServicoPrestadoService,
     AuthService,
     UsuarioService,
+    UserUpdateService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

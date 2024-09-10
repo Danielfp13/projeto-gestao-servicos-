@@ -31,20 +31,6 @@ public class ServicoPrestadoService {
     public ServicoPrestado insert(ServicoPrestadoDto obj) {
         LocalDate data = LocalDate.parse(obj.getData(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         Integer idCliente = obj.getIdCliente();
-		
-		System.out.println("Olá Brasil!!!!");
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
         Cliente cliente = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente inexistente."));
 

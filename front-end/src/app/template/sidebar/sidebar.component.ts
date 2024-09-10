@@ -1,21 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { UsuarioService } from './../../services/usuario.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { UserUpdateService } from 'src/app/services/userupdate.service';
+import { Subscription } from 'rxjs';
+import { Usuario } from 'src/app/login/usuario';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
 
-  usuariologado: string;
+  usuario: Usuario;
+  usuarioLogado: string;
+  username: string;
+  roles: string[];
+  private userUpdateSubscription: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService,
+    private router: Router,
+    private userUpdateService: UserUpdateService,
+    private usuarioService: UsuarioService
+  ) { }
+
+
 
   ngOnInit(): void {
-    this.usuariologado = this.authService.getUsuarioAutenticado();
+    this.carregarDados();
+    this.userUpdateSubscription = this.userUpdateService.userUpdated$.subscribe(() => {
+      this.carregarDados();
+    });
+  }
+
+  carregarDados() {
+    this.username = this.authService.getUserName();
+    this.usuarioService.usuarioByUsername(this.username).subscribe({
+      next: (response) => {
+        this.usuario = response;
+        this.usuarioLogado = this.usuario.nome;
+        this.roles = this.usuario.perfis;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.userUpdateSubscription.unsubscribe();
   }
 
   logout() {

@@ -1,10 +1,9 @@
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { UsuarioService } from '../services/usuario.service';
-import { Usuario } from '../login/usuario';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-
+import { Usuario } from 'src/app/login/usuario';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { UserUpdateService } from 'src/app/services/userupdate.service';
 
 @Component({
   selector: 'app-usuario',
@@ -26,7 +25,8 @@ export class UsuarioComponent implements OnInit {
 
   constructor(private usuarioService: UsuarioService,
      private authService: AuthService,
-     private router: Router
+     private router: Router,
+     private userUpdateService: UserUpdateService
      ) { }
 
   ngOnInit(): void {  
@@ -59,13 +59,11 @@ export class UsuarioComponent implements OnInit {
 
   salvarDados() {
     this.mensagem = '';
-    // Lógica para salvar os dados do usuário após a edição
-    // Verifique se os campos obrigatórios foram preenchidos corretamente antes de prosseguir com o salvamento
-    if (this.usuario.nome && this.usuario.username) {
+ if (this.usuario.nome && this.usuario.username) {
       this.usuarioService.alterarUsuario(this.usuario.username, this.usuario.nome, this.usuario.id).subscribe(
         response => {
-
           this.editarForm = false;
+          this.userUpdateService.notifyUserUpdated();
         },
         error => {
           this.mensagem = error.error.erros;

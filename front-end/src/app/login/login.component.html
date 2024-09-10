@@ -36,13 +36,13 @@
 
                                         <div class="form-group" *ngIf="!esqueceuSenha">
                                             <label class="small mb-1">Senha</label>
-                                            <input [(ngModel)]="usuario.password" class="form-control py-4" type="text" name="password" placeholder="Digite sua senha:">
+                                            <input [(ngModel)]="usuario.password" class="form-control py-4" type="password" name="password" placeholder="Digite sua senha:">
                                         </div>
 
-                                        <div class="form-group align-items-center justify-content-md-between mt-4 mb-0">
-                                            <button class="btn btn-primary" type="submit" *ngIf="!cadastrando && !esqueceuSenha">Enviar</button>
-
-                                            <button class="btn btn-success" type="button" *ngIf="cadastrando " (click)="inserirUsuario()">Cadastrar</button>
+                                        <div class="form-group text-center mt-4 mb-0">
+                                            <button class="btn btn-primary" type="submit" *ngIf="!cadastrando && !esqueceuSenha">Entrar</button>
+                                        
+                                            <button class="btn btn-success" type="button" *ngIf="cadastrando" (click)="inserirUsuario()">Cadastrar</button>
                                             <button class="btn btn-success" type="button" *ngIf="esqueceuSenha" (click)="forgotPassword()">Enviar e-mail</button>
                                             <button class="btn btn-danger ml-3" type="button" *ngIf="cadastrando || esqueceuSenha" (click)="cancelaCadastro()">Cancelar</button>
                                         </div>

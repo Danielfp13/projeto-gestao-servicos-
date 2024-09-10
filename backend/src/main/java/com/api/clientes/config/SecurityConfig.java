@@ -29,6 +29,17 @@ public class SecurityConfig {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
+
+    @Autowired
+    private Environment env;
+
+
+    protected void configure(HttpSecurity http) throws Exception {
+        if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
+            http.headers().frameOptions().disable();
+        }
+    }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
@@ -47,7 +58,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        
+
         return http
                 .httpBasic().disable()
                 .cors().and().csrf().disable()
@@ -55,7 +66,7 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(at -> at
                         .requestMatchers(
-                                HttpMethod.POST,"/usuarios",
+                                HttpMethod.POST, "/usuarios",
                                 "/h2-console/**",
                                 "/auth/**",
                                 "/auth/signin",

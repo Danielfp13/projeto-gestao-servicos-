@@ -61,7 +61,9 @@ public class Usuario {
     public void addPerfil(Perfil role) {
         this.perfis.add(role.getCod());
     }
-
+    public void removePerfil(Perfil role) {
+        this.perfis.remove(role.getCod());
+    }
     public interface Insercao {
     }
 

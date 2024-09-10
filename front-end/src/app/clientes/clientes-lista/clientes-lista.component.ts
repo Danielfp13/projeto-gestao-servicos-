@@ -39,6 +39,7 @@ export class ClientesListaComponent implements OnInit {
 
   ngOnInit(): void {
     this.roles = this.authService.getRole();
+    console.log(this.roles)
     this.findPage(this.page, this.linePerPage, this.direction, this.orderBy);
   }
 
