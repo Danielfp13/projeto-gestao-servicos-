@@ -30,8 +30,8 @@ public class Cliente {
     @CPF(message = "O campo cpf está incorreto.!!")
     private String cpf;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    @Column(name = "data_cadastro", updatable = false)
+    @JsonFormat(pattern="dd-MM-yyyy")
+	@Column(name="data_cadastro", updatable=false)
     private LocalDate dataCadastro;
 
     @PrePersist
