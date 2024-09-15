@@ -127,3 +127,11 @@ Este projeto é uma aplicação completa que consiste em uma API backend desenvo
 1. **Clone o repositório:**
    ```bash
    git clone https://github.com/seu-usuario/seu-repositorio.git
+## Collections para Teste
+
+As collections para teste da API estão localizadas na pasta [**collections para teste no postman**](./collections%20para%20teste%20no%20postman). Você pode importar esses arquivos no Postman para realizar os testes.
+
+## Scripts SQL
+
+Os scripts DDL e DML necessários para a configuração e povoamento do banco de dados estão na pasta [**script-SQL**](./script-SQL). Eles incluem definições de tabelas e inserções de dados para a aplicação.
+
