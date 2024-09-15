@@ -93,13 +93,8 @@ projeto-servico-prestado-cliente/
 ├── script-SQL/               # Scripts SQL para configuração do banco de dados
 ├── README.md                 # Documentação do projeto
 └── .circleci/                # Configurações do CircleCI para integração contínua
+```
 
-### Backend
-
-1. **Clone o repositório:**
-   
-bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
 ## Collections para Teste
 
 As collections para teste da API estão localizadas na pasta [**collections para teste no postman**](./collections%20para%20teste%20no%20postman). Você pode importar esses arquivos no Postman para realizar os testes.
