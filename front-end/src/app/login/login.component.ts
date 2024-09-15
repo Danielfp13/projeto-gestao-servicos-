@@ -57,7 +57,7 @@ export class LoginComponent {
           this.cadastrando = false;
           this.esqueceuSenha = false;
           this.mensagem = "";
-        }, 3000)
+        }, 1000)
       },
       error: (responseError) => {
         console.log(responseError.error.erros)

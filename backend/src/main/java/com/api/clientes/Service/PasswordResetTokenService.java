@@ -1,5 +1,7 @@
 package com.api.clientes.Service;
 
+import com.api.clientes.dto.ForgotPasswordRequestDTO;
+import com.api.clientes.dto.ResetPasswordRequestDTO;
 import com.api.clientes.model.entity.PasswordResetToken;
 import com.api.clientes.model.entity.Usuario;
 import com.api.clientes.repository.PasswordResetTokenRepository;
@@ -27,12 +29,10 @@ public class PasswordResetTokenService {
     private EmailService emailService;
     private JwtTokenProvider jwtTokenProvider;
 
-    public void forgotPassword(Map<String, String> request) {
-        String email = request.get("email");
-        String urlFront = request.get("urlFront");
-        Usuario usuario = usuarioService.findByUsername(email);
+    public void forgotPassword(ForgotPasswordRequestDTO request) {
+        Usuario usuario = usuarioService.findByUsername(request.getEmail());
         PasswordResetToken token = this.createToken(usuario);
-        emailService.enviarEmailRedefinicaoSenha(usuario, token.getToken(), urlFront); // enviar e-mail com link para redefinição de senha
+        emailService.enviarEmailRedefinicaoSenha(usuario, token.getToken(), request.getUrlFront()); // enviar e-mail com link para redefinição de senha
     }
 
     public PasswordResetToken createToken(Usuario usuario) {
@@ -53,9 +53,9 @@ public class PasswordResetTokenService {
         return repository.save(resetToken);
     }
 
-    public void resetPassword(Map<String, String> request) {
-        String token = request.get("token");
-        String password = request.get("password");
+    public void resetPassword(ResetPasswordRequestDTO request) {
+        String token = request.getToken();
+        String password = request.getPassword();
         if (password == "" || password == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A nova senha não foi informada.");
         }

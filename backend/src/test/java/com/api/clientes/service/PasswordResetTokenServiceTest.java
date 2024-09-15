@@ -3,6 +3,8 @@ package com.api.clientes.service;
 import com.api.clientes.Service.EmailService;
 import com.api.clientes.Service.PasswordResetTokenService;
 import com.api.clientes.Service.UsuarioService;
+import com.api.clientes.dto.ForgotPasswordRequestDTO;
+import com.api.clientes.dto.ResetPasswordRequestDTO;
 import com.api.clientes.model.entity.PasswordResetToken;
 import com.api.clientes.model.entity.Usuario;
 import com.api.clientes.repository.PasswordResetTokenRepository;
@@ -55,14 +57,12 @@ class PasswordResetTokenServiceTest {
     @Test
     @DisplayName("Deve enviar um email de redefinição de senha")
     void forgotPassword() throws MessagingException {
-        Map<String, String> request = new HashMap<>();
-        request.put("email", "ana@email.com");
-        request.put("urlFront", "http://localhost:4200");
+        ForgotPasswordRequestDTO request = new ForgotPasswordRequestDTO("ana@email.com","http://localhost:4200");
         when(usuarioService.findByUsername(anyString())).thenReturn(usuario);
         when(jwtTokenProvider.generatePasswordResetToken(usuario)).thenReturn(resetToken.getToken());
         when(repository.save(any(PasswordResetToken.class))).thenReturn(resetToken);
         passwordResetTokenService.forgotPassword(request);
-        verify(emailService, times(1)).enviarEmailRedefinicaoSenha(usuario, resetToken.getToken(),request.get("urlFront"));
+        verify(emailService, times(1)).enviarEmailRedefinicaoSenha(usuario, resetToken.getToken(),request.getUrlFront());
     }
 
 
@@ -85,9 +85,7 @@ class PasswordResetTokenServiceTest {
 
         String token = "test-token";
         String password = "newpassword";
-        Map<String, String> request = new HashMap<>();
-        request.put("token", token);
-        request.put("password", password);
+        ResetPasswordRequestDTO request = new ResetPasswordRequestDTO(token,password);
 
         when(repository.findByToken(anyString())).thenReturn(Optional.of(resetToken));
         doNothing().when(usuarioService).updatePassword(any(), anyString());
@@ -138,9 +136,10 @@ class PasswordResetTokenServiceTest {
     @Test
     @DisplayName("Deve lançar uma exceção ao tentar redefinir a senha sem fornecer um token")
     void resetPassword_MissingToken() {
-        String password = "newpassword";
-        Map<String, String> request = new HashMap<>();
-        request.put("password", password);
+        String password = "newPassword";
+
+        ResetPasswordRequestDTO request = new ResetPasswordRequestDTO();
+        request.setPassword(password);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             passwordResetTokenService.resetPassword(request);
@@ -154,8 +153,8 @@ class PasswordResetTokenServiceTest {
     @DisplayName("Deve lançar uma exceção ao tentar redefinir a senha sem fornecer uma nova senha")
     void resetPassword_MissingPassword() {
         String token = "valid-token";
-        Map<String, String> request = new HashMap<>();
-        request.put("token", token);
+        ResetPasswordRequestDTO request = new ResetPasswordRequestDTO();
+        request.setToken(token);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             passwordResetTokenService.resetPassword(request);
@@ -171,9 +170,7 @@ class PasswordResetTokenServiceTest {
     void resetPassword_NonexistentUser() {
         String token = "token";
         String password = "newpassword";
-        Map<String, String> request = new HashMap<>();
-        request.put("token", token);
-        request.put("password", password);
+        ResetPasswordRequestDTO request = new ResetPasswordRequestDTO(token,password);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             passwordResetTokenService.resetPassword(request);
@@ -190,9 +187,9 @@ class PasswordResetTokenServiceTest {
     void resetPassword_tokenExpired() {
         String token = "token";
         String password = "newpassword";
-        Map<String, String> request = new HashMap<>();
-        request.put("token", token);
-        request.put("password", password);
+
+        ResetPasswordRequestDTO request = new ResetPasswordRequestDTO(token, password);
+
         resetToken.setId(resetToken.getId());
         resetToken.setExpiryDate(LocalDateTime.now().minusDays(1L));
 

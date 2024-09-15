@@ -1,0 +1,852 @@
+{
+	"info": {
+		"_postman_id": "fe354ec0-b6e0-450b-825a-e24c3d5e1b8c",
+		"name": "api servico-prestatdo jwt",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7262595"
+	},
+	"item": [
+		{
+			"name": "Servico Prestado",
+			"item": [
+				{
+					"name": "add serviço",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiTWFyY29zIE1lbmRlcyIsImlhdCI6MTcyNjI0Nzc2NiwiZXhwIjoxNzI2MjUxMzY2LCJzdWIiOiJ1c2VyQGVtYWlsLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.IOWsF8wP4Op-jYSDvqVghh9IqI9IUAAwxBMOT5AXWOY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\":\"Comprar Carne  \",\r\n    \"preco\":\"90.50\",\r\n    \"data\":\"2023-09-12\",\r\n    \"idCliente\":\"1\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/servicos-prestado",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servicos-prestado"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "busca",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiTWFyY29zIE1lbmRlcyIsImlhdCI6MTcyNjI0Nzc2NiwiZXhwIjoxNzI2MjUxMzY2LCJzdWIiOiJ1c2VyQGVtYWlsLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.IOWsF8wP4Op-jYSDvqVghh9IqI9IUAAwxBMOT5AXWOY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/servicos-prestado/search?page=0&size=100&orderBy=data&direction=DESC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"servicos-prestado",
+								"search"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "maria",
+									"disabled": true
+								},
+								{
+									"key": "mes",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "100"
+								},
+								{
+									"key": "orderBy",
+									"value": "data"
+								},
+								{
+									"key": "direction",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "salvar cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiRGFuaWVsIiwiaWF0IjoxNzI2MzIyNTA4LCJleHAiOjE3MjYzMjYxMDgsInN1YiI6ImRhbmllbC5zaUBvdXRsb29rLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.oOiA30xdD76nhE45fdgvGTvo5bH7XHEAQTKb1-hA4EQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"rafael\",\r\n    \"cpf\":\"99016323074\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscar cliente por id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/clientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscar todos clientes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiTWFyY29zIE1lbmRlcyIsImlhdCI6MTcyNjI0NzE0MiwiZXhwIjoxNzI2MjUwNzQyLCJzdWIiOiJ1c2VyQGVtYWlsLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.nSdJCSYO-1NOpMW7Gng_E2Lw5cqLRA6zy_SsWSNC288",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"jose\",\r\n    \"cpf\":\"09087654321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir cliente por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiTWFyY29zIE1lbmRlcyIsImlhdCI6MTcyNjI0NzE0MiwiZXhwIjoxNzI2MjUwNzQyLCJzdWIiOiJ1c2VyQGVtYWlsLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.nSdJCSYO-1NOpMW7Gng_E2Lw5cqLRA6zy_SsWSNC288",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"jose\",\r\n    \"cpf\":\"09087654321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/clientes/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clientes",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscar pagina de cliente ",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiTWFyY29zIE1lbmRlcyIsImlhdCI6MTcyNjI0NzE0MiwiZXhwIjoxNzI2MjUwNzQyLCJzdWIiOiJ1c2VyQGVtYWlsLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.nSdJCSYO-1NOpMW7Gng_E2Lw5cqLRA6zy_SsWSNC288",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"jose\",\r\n    \"cpf\":\"09087654321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/clientes/page?page=0&linePerPage=2&orderBy=id&direction=DESC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clientes",
+								"page"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "linePerPage",
+									"value": "2"
+								},
+								{
+									"key": "orderBy",
+									"value": "id"
+								},
+								{
+									"key": "direction",
+									"value": "DESC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiTWFyY29zIE1lbmRlcyIsImlhdCI6MTcyNjI0NzE0MiwiZXhwIjoxNzI2MjUwNzQyLCJzdWIiOiJ1c2VyQGVtYWlsLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.nSdJCSYO-1NOpMW7Gng_E2Lw5cqLRA6zy_SsWSNC288",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"Alterado\",\r\n    \"cpf\":\"55743220050\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/clientes/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"clientes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "usuario",
+			"item": [
+				{
+					"name": "cadastrar usuario",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"leticia@email.com\",\r\n    \"nome\":\"Leticia Mendes\",\r\n    \"password\":\"Senha01@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiRGFuaWVsIiwiaWF0IjoxNzI2MjYwMjQzLCJleHAiOjE3MjYyNjM4NDMsInN1YiI6ImRhbmllbC5zaUBvdXRsb29rLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.xpeVhWrHoDGJLBxsSvEpXgwyd6kiRzLu5p-nFZ1Y9Pc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"daniel.si@outlook.com.br\",\r\n    \"nome\":\"Daniel\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuarios/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar senha de usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiRGFuaWVsIiwiaWF0IjoxNzI2MjYwNjQ4LCJleHAiOjE3MjYyNjQyNDgsInN1YiI6ImRhbmllbC5zaUBvdXRsb29rLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.Ip2UE0cTQz7dmZ4Qrvm5yPHfYIKykbDC61q_tbbGjCA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \r\n  \"senhaAtual\": \"Daniel@1\",\r\n  \"novaSenha\": \"Senha01@\",\r\n  \"confirmaNovaSenha\": \"Senha01@\",\r\n  \"email\": \"daniel.si@outlook.com.br\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuarios/alterar-senha",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"alterar-senha"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscar usuario por email",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiRGFuaWVsIiwiaWF0IjoxNzI2MjUwNTE2LCJleHAiOjE3MjYyNTQxMTYsInN1YiI6ImRhbmllbC5zaUBvdXRsb29rLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9._nXYDWC5CrYG7hsM_7Es7sEvjgOql4clb3PzkPjQrMU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuarios/username/daniel.si@outlook.com.br",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"username",
+								"daniel.si@outlook.com.br"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add perfil admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiRGFuaWVsIiwiaWF0IjoxNzI2MjQ5ODE1LCJleHAiOjE3MjYyNTM0MTUsInN1YiI6ImRhbmllbC5zaUBvdXRsb29rLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.c6nZP5GZBWmb8AxvnqZbwE6frWdtIgBgEumHUJbb3-U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuarios/perfil-admin/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"perfil-admin",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remover perfil admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiRGFuaWVsIiwiaWF0IjoxNzI2MjUwNTE2LCJleHAiOjE3MjYyNTQxMTYsInN1YiI6ImRhbmllbC5zaUBvdXRsb29rLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9._nXYDWC5CrYG7hsM_7Es7sEvjgOql4clb3PzkPjQrMU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuarios/remover-perfil-admin/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"remover-perfil-admin",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscar usuario por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwidXN1YXJpbyI6Ik1hcmlhIiwiaWF0IjoxNzI2MzI2NzY3LCJleHAiOjE3MjYzMzAzNjcsInN1YiI6Im1hcmlhQGVtYWlsLmNvbSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.YlB5J7anKTWnhOgaSvpa_q_EtbnUgXF0CI-eUbTA8x4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuarios/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "excluir usuario por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiRGFuaWVsIiwiaWF0IjoxNzI2MjQ5ODE1LCJleHAiOjE3MjYyNTM0MTUsInN1YiI6ImRhbmllbC5zaUBvdXRsb29rLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.c6nZP5GZBWmb8AxvnqZbwE6frWdtIgBgEumHUJbb3-U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuarios/33",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"33"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bucar pagina de usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwidXN1YXJpbyI6Ik1hcmlhIiwiaWF0IjoxNzI2MzI2NzY3LCJleHAiOjE3MjYzMzAzNjcsInN1YiI6Im1hcmlhQGVtYWlsLmNvbSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.YlB5J7anKTWnhOgaSvpa_q_EtbnUgXF0CI-eUbTA8x4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuarios/page?page=0&linePerPage=12&orderBy=id&direction=ASC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"page"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "linePerPage",
+									"value": "12"
+								},
+								{
+									"key": "orderBy",
+									"value": "id"
+								},
+								{
+									"key": "direction",
+									"value": "ASC"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Gerar Token",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true,
+							"accept-encoding": true,
+							"accept": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"maria@email.com\",\r\n    \"password\":\"123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refleshToken",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWxzIjpbIlJPTEVfVVNFUiJdLCJ1c3VhcmlvIjoiQW5hIE1lbmRlcyIsImlhdCI6MTcyNjI0ODY5MSwiZXhwIjoxNzI2MjUyMjkxLCJzdWIiOiJ1c2VyQGVtYWlsLmNvbS5iciIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJ9.fjkhAnNiG6T3lIB0RsteJf1dwEvVNxKsknOZnhqJ_Pk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJLYXRpYSBNZW5kZXMiLCJpYXQiOjE2ODUzMjkyMjYsImV4cCI6MTY4NTMzMjgyNiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIn0.jFZbn-TIbVZc8_1UhgwZt0mT-5PvYi0WefacojABwYU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/auth/refresh/user@email.com.br",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"refresh",
+								"user@email.com.br"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "passsword",
+			"item": [
+				{
+					"name": "modificar senha",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJEYW5pZWwiLCJpYXQiOjE3MjYyNjI0NjYsImV4cCI6MTcyNjI2NjA2NiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIn0.G_Ad7IHUshVjjKEYzgyXu6losqGtUOgb5AFYwLKIidk\",\r\n    \"password\":\"Senha03@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/password/reset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"password",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "esqueceu a senha",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"daniel.si@outlook.com.br\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/password/forgot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"password",
+								"forgot"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

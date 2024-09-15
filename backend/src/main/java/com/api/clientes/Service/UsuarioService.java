@@ -1,5 +1,6 @@
 package com.api.clientes.Service;
 
+import com.api.clientes.dto.ChangePasswordRequestDTO;
 import com.api.clientes.model.entity.Usuario;
 import com.api.clientes.model.enums.Perfil;
 import com.api.clientes.repository.UsuarioRepository;
@@ -99,20 +100,16 @@ public class UsuarioService {
         repository.save(usuario);
     }
 
-    public void changePassword(Map<String, String> request) {
-        String senhaAtual = request.get("senhaAtual");
-        String novaSenha = request.get("novaSenha");
-        String confirmaNovaSenha = request.get("confirmaNovaSenha");
-        String email = request.get("email");
-        if (!novaSenha.equals(confirmaNovaSenha)) {
+    public void changePassword(ChangePasswordRequestDTO changePasswordRequestDTO) {
+        if (!changePasswordRequestDTO.getNovaSenha().equals(changePasswordRequestDTO.getConfirmaNovaSenha())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A confirmação da nova senha não corresponde à nova senha");
         }
-        Usuario usuario = findByUsername(email);
+        Usuario usuario = findByUsername(changePasswordRequestDTO.getEmail());
 
-        if (!encoder.matches(senhaAtual, usuario.getPassword())) {
+        if (!encoder.matches(changePasswordRequestDTO.getSenhaAtual(), usuario.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "A senha atual fornecida está incorreta");
         }
-        this.updatePassword(usuario, novaSenha);
+        this.updatePassword(usuario, changePasswordRequestDTO.getNovaSenha());
     }
 
     public boolean isValidPassword(String password) {

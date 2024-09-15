@@ -1,6 +1,7 @@
 package com.api.clientes.service;
 
 import com.api.clientes.Service.UsuarioService;
+import com.api.clientes.dto.ChangePasswordRequestDTO;
 import com.api.clientes.model.entity.Usuario;
 import com.api.clientes.model.enums.Perfil;
 import com.api.clientes.repository.UsuarioRepository;
@@ -147,18 +148,25 @@ class UsuarioServiceTest {
     }
 
     @Test
-    @DisplayName("Não deve adicionar o perfil ADMIN se o usuário já tiver esse perfil")
+    @DisplayName("Deve lançar uma exceção se o usuário já tiver o perfil ADMIN")
     void addAdminUsuarioJaPossuiPerfilAdminTest() {
         int id = 1;
-        usuario.addPerfil(Perfil.ADMIN);
-        when(usuarioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(usuario));
+        usuario.addPerfil(Perfil.ADMIN); // Adiciona o perfil ADMIN ao usuário
+        when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario)); // Configura o mock para retornar o usuário com ADMIN
 
-        Usuario usuarioComPerfilAdmin = usuarioService.addAdmin(id);
+        // Verifica se a exceção é lançada
+        ResponseStatusException thrown = assertThrows(ResponseStatusException.class, () -> usuarioService.addAdmin(id));
 
-        assertThat(usuarioComPerfilAdmin.getPerfis()).contains(Perfil.ADMIN);
+        // Verifica a mensagem da exceção
+        assertEquals("Esse usuário já possui o perfil ADMIN.", thrown.getReason());
+
+        // Verifica se o método findById foi chamado uma vez
         verify(usuarioRepository, times(1)).findById(id);
+
+        // Verifica se o método save nunca foi chamado
         verify(usuarioRepository, never()).save(usuario);
     }
+
 
     @Test
     @DisplayName("Deve buscar um usuario pelo email")
@@ -407,83 +415,66 @@ class UsuarioServiceTest {
     @Test
     @DisplayName("Deve alterar a senha do usuário com sucesso")
     void changePasswordSuccessTest() {
-        String senhaAtual = "senhaAntiga+1";
-        String novaSenha = "novaSenha+1";
-        String confirmaNovaSenha = "novaSenha+1";
-        String email = "usuario@teste.com";
+        ChangePasswordRequestDTO requestDTO = new ChangePasswordRequestDTO("senhaAntiga@01",
+         "novaSenha@01","novaSenha@01","usuario@teste.com");
 
         Usuario usuario = new Usuario();
-        usuario.setUsername(email);
-        usuario.setPassword(senhaAtual);
+        usuario.setUsername(requestDTO.getEmail());
+        usuario.setPassword(requestDTO.getSenhaAtual());
 
-        Map<String, String> request = new HashMap<>();
-        request.put("senhaAtual", senhaAtual);
-        request.put("novaSenha", novaSenha);
-        request.put("confirmaNovaSenha", confirmaNovaSenha);
-        request.put("email", email);
 
-        when(usuarioRepository.findByUsername(email)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.findByUsername(requestDTO.getEmail())).thenReturn(Optional.of(usuario));
         when(encoder.matches(anyString(), anyString())).thenReturn(true);
 
-        usuarioService.changePassword(request);
+        usuarioService.changePassword(requestDTO);
 
-        verify(usuarioRepository, times(2)).findByUsername(email);
-        verify(encoder, times(1)).matches(eq(senhaAtual), anyString());
+        verify(usuarioRepository, times(2)).findByUsername(anyString());
+        verify(encoder, times(1)).matches(any(), anyString());
     }
 
     @Test
     @DisplayName("Deve lançar um erro quando a confirmação da nova senha não corresponder à nova senha")
     void changePasswordInvalidConfirmationTest() {
-        String senhaAtual = "senhaAntiga";
-        String novaSenha = "novaSenha";
-        String confirmaNovaSenha = "senhaDiferente";
-        String email = "usuario@teste.com";
+        ChangePasswordRequestDTO requestDTO = new ChangePasswordRequestDTO("senhaAntiga@01",
+                "novaSenha@01","novaSenha@02","usuario@teste.com");
 
-        Map<String, String> request = new HashMap<>();
-        request.put("senhaAtual", senhaAtual);
-        request.put("novaSenha", novaSenha);
-        request.put("confirmaNovaSenha", confirmaNovaSenha);
-        request.put("email", email);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> usuarioService.changePassword(request));
+                () -> usuarioService.changePassword(requestDTO));
 
         assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(exception.getReason()).isEqualTo("A confirmação da nova senha não corresponde à nova senha");
 
-        verify(usuarioRepository, never()).findByUsername(any());
+        verify(usuarioRepository, never()).findByUsername(requestDTO.getEmail());
         verify(encoder, never()).matches(any(), any());
     }
+
 
     @Test
     @DisplayName("Deve lançar um erro quando a senha atual fornecida está incorreta")
     void changePasswordInvalidCurrentPasswordTest() {
-        String senhaAtual = "senhaAntiga+1";
-        String novaSenha = "novaSenha+1";
-        String confirmaNovaSenha = "novaSenha+1";
-        String email = "usuario@teste.com";
+
+        ChangePasswordRequestDTO requestDTO = new ChangePasswordRequestDTO("senhaAntiga@01",
+                "novaSenha@01","novaSenha@01","usuario@teste.com");
 
         Usuario usuario = new Usuario();
-        usuario.setUsername(email);
+        usuario.setUsername("usuario@teste.com");
         usuario.setPassword("senhaDiferente+_1");
 
-        Map<String, String> request = new HashMap<>();
-        request.put("senhaAtual", senhaAtual);
-        request.put("novaSenha", novaSenha);
-        request.put("confirmaNovaSenha", confirmaNovaSenha);
-        request.put("email", email);
-
-        when(usuarioRepository.findByUsername(email)).thenReturn(Optional.of(usuario));
-        when(encoder.matches(senhaAtual, usuario.getPassword())).thenReturn(false);
+        when(usuarioRepository.findByUsername(usuario.getUsername())).thenReturn(Optional.of(usuario));
+        when(encoder.matches(requestDTO.getSenhaAtual(), usuario.getPassword())).thenReturn(false);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> usuarioService.changePassword(request));
+                () -> usuarioService.changePassword(requestDTO));
+
 
         assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         assertThat(exception.getReason()).isEqualTo("A senha atual fornecida está incorreta");
 
-        verify(usuarioRepository, times(1)).findByUsername(email);
-        verify(encoder, times(1)).matches(senhaAtual, usuario.getPassword());
+
+        verify(usuarioRepository, times(1)).findByUsername(usuario.getUsername());
+        verify(encoder, times(1)).matches(requestDTO.getSenhaAtual(), usuario.getPassword());
+
     }
 
     @Test

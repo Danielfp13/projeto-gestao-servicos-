@@ -24,7 +24,7 @@ public class ClienteService {
     public Cliente find(Integer id) {
         return repositoty
                 .findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe clinte com id = " + id + "."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Não existe cliente com id = " + id + "."));
     }
 
     public List<Cliente> findAll() {

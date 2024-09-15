@@ -42,9 +42,9 @@ export class EsqueciSenhaComponent {
         console.log(error.error.erros)
         this.mensagem = error.error.erros;
         this.corMensagem = 'danger';
-        setTimeout(() => {
+/*         setTimeout(() => {
           this.router.navigate(['/login']);
-        }, 9000);
+        }, 9000); */
       }
     );
   }

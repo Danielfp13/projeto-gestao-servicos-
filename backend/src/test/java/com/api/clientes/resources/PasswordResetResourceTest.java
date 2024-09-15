@@ -1,6 +1,8 @@
 package com.api.clientes.resources;
 
 import com.api.clientes.Service.PasswordResetTokenService;
+import com.api.clientes.dto.ForgotPasswordRequestDTO;
+import com.api.clientes.dto.ResetPasswordRequestDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,8 +46,8 @@ class PasswordResetResourceTest {
     @Test
     @DisplayName("Deve enviar um email de recuperação de senha ao usuário")
     void forgotPassword() throws Exception {
-        Map<String, String> request = new HashMap<>();
-        doNothing().when(passwordResetTokenService).forgotPassword(any());
+        ForgotPasswordRequestDTO request = new ForgotPasswordRequestDTO("ana@email.com","http://localhost:4200" );
+        doNothing().when(passwordResetTokenService).forgotPassword(request);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post(PASSWORD_API_URI_PATH.concat("/forgot"))
@@ -54,14 +56,17 @@ class PasswordResetResourceTest {
         mockMvc
                 .perform(requestBuilder)
                 .andExpect(status().isOk());
-        verify(passwordResetTokenService, times(1)).forgotPassword(request);
+        verify(passwordResetTokenService, times(1)).forgotPassword(any(ForgotPasswordRequestDTO.class));
     }
 
 
     @Test
     @DisplayName("Deve altera a senha do usuário")
     void resetPassword() throws Exception {
-        Map<String, String> request = new HashMap<>();
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJEYW5pZWwiLCJpYXQiOjE3MjYzMzA4ODgsImV4cCI6MTcyN" +
+                "jMzNDQ4OCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIn0.MzGSLQKRJ93Sr8Wgs4K1rbjP84o7GImbVA9laLu9_ts";
+        String password = "Senha01@";
+        ResetPasswordRequestDTO request = new ResetPasswordRequestDTO(token,password);
 
         doNothing().when(passwordResetTokenService).resetPassword(any());
 
@@ -72,6 +77,6 @@ class PasswordResetResourceTest {
         mockMvc
                 .perform(requestBuilder)
                 .andExpect(status().isOk());
-        verify(passwordResetTokenService, times(1)).resetPassword(request);
+        verify(passwordResetTokenService, times(1)).resetPassword(any());
     }
 }

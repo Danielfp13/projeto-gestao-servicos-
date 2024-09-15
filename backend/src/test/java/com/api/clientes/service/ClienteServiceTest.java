@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,6 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // Incluído para não usar banco embutido
 class ClienteServiceTest {
 
     @Mock
@@ -79,7 +81,7 @@ class ClienteServiceTest {
         when(repository.findById(anyInt())).thenReturn(Optional.empty());
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> service.find(id));
-        assertThat("Não existe clinte com id = " + id + ".").isEqualTo(exception.getReason());
+        assertThat("Não existe cliente com id = " + id + ".").isEqualTo(exception.getReason());
         verify(repository, times(1)).findById(id);
     }
 
@@ -180,7 +182,7 @@ class ClienteServiceTest {
     @DisplayName("Deve definir a data de cadastro antes de persistir o cliente")
     void prePersistTest() {
           // Chama o método prePersist
-        cliente.prePersite();
+        cliente.prePersist();
 
         // Verifica se a data de cadastro foi definida corretamente
         LocalDate dataAtual = LocalDate.now();

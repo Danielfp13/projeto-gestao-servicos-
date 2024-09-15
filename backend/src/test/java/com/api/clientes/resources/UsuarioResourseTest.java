@@ -1,6 +1,7 @@
 package com.api.clientes.resources;
 
 import com.api.clientes.Service.UsuarioService;
+import com.api.clientes.dto.ChangePasswordRequestDTO;
 import com.api.clientes.model.entity.Usuario;
 import com.api.clientes.model.enums.Perfil;
 import com.api.clientes.security.jwt.JwtTokenProvider;
@@ -224,12 +225,8 @@ class UsuarioResourseTest {
     @DisplayName("Deve alterar a senha do usuário")
     void changePassword() throws Exception {
         // Arrange
-        Map<String, String> request = new HashMap<>();
-
-        request.put("senhaAtual", "MinhaSenha#1");
-        request.put("novaSenha", "NovaSeha*1");
-        request.put("confirmaNovaSenha", "NovaSenha*1");
-        request.put("email", "ana@email.com");
+        ChangePasswordRequestDTO requestDTO = new ChangePasswordRequestDTO("senhaAntiga+1",
+                "novaSenha+1","novaSenha+1","usuario@teste.com");
 
         // Configurar o comportamento do serviço
         doNothing().when(usuarioService).changePassword(any());
@@ -237,13 +234,13 @@ class UsuarioResourseTest {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post(USUARIO_API_URI_PATH.concat("/alterar-senha"))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(request))
+                .content(asJsonString(requestDTO))
                 .header("Authorization", "Bearer " + accessToken);
 
         // Act & Assert
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk());
-        Mockito.verify(usuarioService, Mockito.times(1)).changePassword(request);
+        Mockito.verify(usuarioService, Mockito.times(1)).changePassword(any(ChangePasswordRequestDTO.class));
     }
 
     @Test
