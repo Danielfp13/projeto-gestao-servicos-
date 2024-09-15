@@ -102,3 +102,41 @@ As collections para teste da API estão localizadas na pasta [**collections para
 ## Scripts SQL
 
 Os scripts DDL e DML necessários para a configuração e povoamento do banco de dados estão na pasta [**script-SQL**](./script-SQL). Eles incluem definições de tabelas e inserções de dados para a aplicação.
+
+## Instalação e Configuração
+
+Para configurar e rodar o projeto localmente, siga os seguintes passos:
+
+### Clonar Repositorio
+
+1. Clone  o repositório para sua máquina local:
+   ```bash
+   git clone https://github.com/Danielfp13/projeto-servico-prestado-cliente.git
+   ```
+### Backend
+
+1. Navegue até o diretório `backend`:
+   ```bash
+   cd backend
+   ```
+2. Instale as dependências do Maven:
+   ```bash
+   mvn clean install
+   ```
+3. Execute o servidor backend:
+   ```bash
+   mvn spring-boot:run
+   ```
+### Frontend
+1. Navegue até o diretório `frontend`:
+   ```bash
+   cd frontend
+2. Instale as dependências do Node.js:
+   ```bash
+   npm install
+   ```
+3. Execute o servidor frontend:
+   ```bash
+   ng serve -o
+   ```
+
