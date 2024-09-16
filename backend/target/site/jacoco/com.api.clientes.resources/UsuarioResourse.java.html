@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsuarioResourse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">clientes</a> &gt; <a href="index.source.html" class="el_package">com.api.clientes.resources</a> &gt; <span class="el_source">UsuarioResourse.java</span></div><h1>UsuarioResourse.java</h1><pre class="source lang-java linenums">package com.api.clientes.resources;
+
+import com.api.clientes.Service.UsuarioService;
+import com.api.clientes.dto.ChangePasswordRequestDTO;
+import com.api.clientes.model.entity.Cliente;
+import com.api.clientes.model.entity.Usuario;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.Map;
+
+
+@RestController
+@RequestMapping(&quot;/usuarios&quot;)
+@Tag(name = &quot;Usuario Endpoint&quot;, description = &quot;Operações relacionadas a usuário.&quot;)
+<span class="fc" id="L24">public class UsuarioResourse {</span>
+
+    @Autowired
+    private UsuarioService service;
+
+    @PostMapping
+    @Operation(summary = &quot;Cadastro de usuário&quot;, description = &quot;Cadastra um novo usuário no sistema.&quot;)
+    public ResponseEntity&lt;Usuario&gt; insert( @Validated(Usuario.Insercao.class) @RequestBody Usuario usuario) {
+<span class="fc" id="L32">        usuario = service.insert(usuario);</span>
+<span class="fc" id="L33">        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;).buildAndExpand(usuario.getId()).toUri();</span>
+<span class="fc" id="L34">        return ResponseEntity.created(uri).body(usuario);</span>
+    }
+
+    @PutMapping (&quot;/{id}&quot;)
+    @Operation(summary = &quot;Alterar usuário&quot;, description = &quot;Altera os dados de um usuário previamente cadastrado no sistema.&quot;)
+    public ResponseEntity&lt;Usuario&gt; update(@Validated(Usuario.Atualizacao.class) @RequestBody Usuario usuario, @PathVariable Integer id){
+<span class="fc" id="L40">        usuario = service.update(usuario,id);</span>
+<span class="fc" id="L41">        return ResponseEntity.ok().body(usuario);</span>
+    }
+
+    @PostMapping (&quot;/alterar-senha&quot;)
+    @Operation(summary = &quot;Alterar senha&quot;,
+            description = &quot;Permite a alteração da senha de um usuário previamente cadastrado no sistema informando os seguintes &quot; +
+                    &quot;campos senhaAtual, novaSenha, confirmaNovaSenha e email.&quot;)
+    public ResponseEntity&lt;Void&gt; changePassword(@Valid @RequestBody ChangePasswordRequestDTO request) {
+<span class="fc" id="L49">        service.changePassword(request);</span>
+<span class="fc" id="L50">        return ResponseEntity.ok().build();</span>
+    }
+
+    @PostMapping(&quot;/perfil-admin/{id}&quot;)
+    @Operation(summary = &quot;Adicionar perfil ADMIN&quot;, description = &quot;Adiciona o perfil de adiministrador a um usuário informando o id do usuário.&quot;)
+    public ResponseEntity&lt;Usuario&gt; addAdmin(@PathVariable Integer id) {
+<span class="fc" id="L56">        Usuario usuario = service.addAdmin(id);</span>
+<span class="fc" id="L57">        return ResponseEntity.ok(usuario);</span>
+    }
+
+    @PostMapping(&quot;/remover-perfil-admin/{id}&quot;)
+    @Operation(summary = &quot;Remove o perfil ADMIN&quot;, description = &quot;Remove o perfil de adiministrador a um usuário informando o id do usuário.&quot;)
+    public ResponseEntity&lt;Usuario&gt; removeAdmin(@PathVariable Integer id) {
+<span class="nc" id="L63">        Usuario usuario = service.removeAdmin(id);</span>
+<span class="nc" id="L64">        return ResponseEntity.ok(usuario);</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Consultar Usuário por ID&quot;, description = &quot;Recupera os dados de um usuário previamente cadastrado&quot; +
+            &quot; no sistema, utilizando o identificador único (ID) fornecido.&quot;)
+    public ResponseEntity&lt;Usuario&gt;findById(@PathVariable Integer id){
+<span class="fc" id="L71">        return ResponseEntity.ok(service.findById(id));</span>
+    }
+
+    @GetMapping(&quot;/username/{username}&quot;)
+    @Operation(summary = &quot;Consultar Usuário por username&quot;, description = &quot;Recupera os dados de um usuário previamente cadastrado&quot; +
+            &quot; no sistema, utilizando o identificador o email fornecido.&quot;)
+    public ResponseEntity&lt;Usuario&gt;findByUsername(@PathVariable String username){
+<span class="fc" id="L78">        return ResponseEntity.ok(service.findByUsername(username));</span>
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    @Operation(summary = &quot;Excluir um usuário&quot;, description = &quot;Exclui um usuário já cadastrado no sistema, informando o id do usuário.&quot;)
+    public ResponseEntity&lt;Usuario&gt;deleteById(@PathVariable Integer id){
+<span class="fc" id="L84">        service.deleteById(id);</span>
+<span class="fc" id="L85">        return ResponseEntity.noContent().build();</span>
+    }
+
+    @GetMapping(&quot;/page&quot;)
+    @Operation(summary = &quot;Busca paginada de usuários&quot;, description = &quot;Recupera uma lista paginada de usuários cadastrados &quot; +
+            &quot;no sistema. Permite a definição do número da página, quantidade de registros por página, direção da ordenação &quot; +
+            &quot;(ASC ou DESC) e campo de ordenação (ex: nome).&quot;
+    )
+    public  ResponseEntity&lt;Page&lt;Usuario&gt;&gt;findPage(
+            @RequestParam(value = &quot;page&quot;, defaultValue = &quot;0&quot;, required = false) Integer page,
+            @RequestParam(value = &quot;linePerPage&quot;, defaultValue = &quot;10&quot;, required = false) Integer linePerPage,
+            @RequestParam(value = &quot;direction&quot;, defaultValue = &quot;ASC&quot;, required = false) String direction,
+            @RequestParam(value = &quot;orderBy&quot;, defaultValue = &quot;nome&quot;, required = false) String orderBy
+    ){
+<span class="fc" id="L99">        return ResponseEntity.ok(service.findPage(page,linePerPage,direction,orderBy));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

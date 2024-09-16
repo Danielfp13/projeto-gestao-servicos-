@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClienteResourse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">clientes</a> &gt; <a href="index.source.html" class="el_package">com.api.clientes.resources</a> &gt; <span class="el_source">ClienteResourse.java</span></div><h1>ClienteResourse.java</h1><pre class="source lang-java linenums">package com.api.clientes.resources;
+
+import com.api.clientes.Service.ClienteService;
+import com.api.clientes.model.entity.Cliente;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/clientes&quot;)
+@Tag(name = &quot;Cliente Endpoint&quot;, description = &quot;Operações relacionadas aos clientes.&quot;)
+<span class="fc" id="L20">public class ClienteResourse {</span>
+
+    @Autowired
+    private ClienteService service;
+
+    @PostMapping
+    @Operation(summary = &quot;Cadastro de cliente&quot;, description = &quot;Cadastra um novo Cliente no sistema&quot;)
+    public ResponseEntity&lt;Cliente&gt; insert(@Valid @RequestBody Cliente cliente){
+<span class="fc" id="L28">        cliente = service.insert(cliente);</span>
+<span class="fc" id="L29">        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;).buildAndExpand(cliente.getId()).toUri();</span>
+<span class="fc" id="L30">        return ResponseEntity.created(uri).body(cliente);</span>
+    }
+
+    @PutMapping (&quot;/{id}&quot;)
+    @Operation(summary = &quot;Alterar cliente&quot;, description = &quot;Altera os dados de um cliente previamente cadastrado no sistema.&quot;)
+    public ResponseEntity&lt;Cliente&gt; update(@Valid @RequestBody Cliente cliente, @PathVariable Integer id){
+<span class="fc" id="L36">        cliente =service.update(cliente,id);</span>
+<span class="fc" id="L37">        return ResponseEntity.ok().body(cliente);</span>
+    }
+
+    @DeleteMapping (&quot;/{id}&quot;)
+    @Operation(summary = &quot;Excluir cliente&quot;, description = &quot;Exclui um cliente já cadastrado no sistema.&quot;)
+    public ResponseEntity&lt;Cliente&gt; delete(@PathVariable Integer id){
+<span class="fc" id="L43">        service.delete(id);</span>
+<span class="fc" id="L44">        return ResponseEntity.noContent().build();</span>
+    }
+
+    @GetMapping (&quot;/{id}&quot;)
+    @Operation(summary = &quot;Consultar Cliente por ID&quot;, description = &quot;Recupera os dados de um cliente previamente cadastrado&quot; +
+            &quot; no sistema, utilizando o identificador único (ID) fornecido.&quot;)
+    public ResponseEntity&lt;Cliente&gt; find(@PathVariable Integer id){
+<span class="fc" id="L51">        Cliente cliente = service.find(id);</span>
+<span class="fc" id="L52">        return ResponseEntity.ok().body(cliente);</span>
+    }
+
+    @GetMapping
+    @Operation(summary = &quot;Consultar todos os cliente&quot;, description = &quot;Recupera os detalhes de todos os  cliente previamente &quot; +
+            &quot;cadastrado no sistema.&quot;)
+    public ResponseEntity&lt;List&lt;Cliente&gt;&gt; findAll(){
+<span class="fc" id="L59">        List&lt;Cliente&gt; clientes = service.findAll();</span>
+<span class="fc" id="L60">        return ResponseEntity.ok().body(clientes);</span>
+    }
+
+
+    @GetMapping(&quot;/page&quot;)
+    @Operation(summary = &quot;Busca paginada de clientes&quot;, description = &quot;Recupera uma lista paginada de clientes cadastrados &quot; +
+            &quot;no sistema. Permite a definição do número da página, quantidade de registros por página, direção da ordenação &quot; +
+            &quot;(ASC ou DESC) e campo de ordenação (ex: nome).&quot;
+    )
+    public ResponseEntity&lt;Page&lt;Cliente&gt;&gt; findPage(
+            @RequestParam(value = &quot;page&quot; , defaultValue = &quot;0&quot;) Integer page,
+            @RequestParam(value = &quot;linePerPage&quot; , defaultValue = &quot;24&quot;) Integer linePerPage,
+            @RequestParam(value = &quot;direction&quot; , defaultValue = &quot;ASC&quot;) String direction,
+            @RequestParam(value = &quot;orderBy&quot; , defaultValue = &quot;nome&quot;) String orderBy
+    ){
+<span class="fc" id="L75">        Page&lt;Cliente&gt; pageCliente = service.findPage(page,linePerPage,direction,orderBy);</span>
+<span class="fc" id="L76">        return ResponseEntity.ok().body(pageCliente);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

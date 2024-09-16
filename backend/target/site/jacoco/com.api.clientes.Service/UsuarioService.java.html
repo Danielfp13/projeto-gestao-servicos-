@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsuarioService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">clientes</a> &gt; <a href="index.source.html" class="el_package">com.api.clientes.Service</a> &gt; <span class="el_source">UsuarioService.java</span></div><h1>UsuarioService.java</h1><pre class="source lang-java linenums">package com.api.clientes.Service;
+
+import com.api.clientes.dto.ChangePasswordRequestDTO;
+import com.api.clientes.model.entity.Usuario;
+import com.api.clientes.model.enums.Perfil;
+import com.api.clientes.repository.UsuarioRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Map;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L22">public class UsuarioService {</span>
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private UsuarioRepository repository;
+
+    public Usuario insert(Usuario usuario) {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (existsByUsername(usuario.getUsername())) {</span>
+<span class="fc" id="L32">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Já existe usuário com o login &quot; + usuario.getUsername() + &quot; cadastrado.&quot;);</span>
+        } else {
+<span class="fc" id="L34">            isValidPassword(usuario.getPassword());</span>
+<span class="fc" id="L35">            usuario.setId(null);</span>
+<span class="fc" id="L36">            usuario.setPassword(encoder.encode(usuario.getPassword()));</span>
+<span class="fc" id="L37">            return repository.save(usuario);</span>
+        }
+
+    }
+
+    public boolean existsByUsername(String username) {
+<span class="fc" id="L43">        return repository.existsByUsername(username);</span>
+    }
+
+
+    public Usuario findById(Integer id) {
+<span class="fc" id="L48">        return repository.findById(id).orElseThrow(() -&gt; new ResponseStatusException(</span>
+                HttpStatus.NOT_FOUND, &quot;Não existe usuário com esse id &quot; + id + &quot;.&quot;));
+
+    }
+
+    public Usuario addAdmin(Integer id) {
+<span class="fc" id="L54">        Usuario usuario = findById(id);</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (!usuario.getPerfis().contains(Perfil.ADMIN)) {</span>
+<span class="fc" id="L56">            usuario.addPerfil(Perfil.ADMIN);</span>
+<span class="fc" id="L57">            usuario = repository.save(usuario);</span>
+        }else{
+<span class="fc" id="L59">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Esse usuário já possui o perfil ADMIN.&quot;);</span>
+        }
+<span class="fc" id="L61">        return usuario;</span>
+    }
+
+    public Usuario findByUsername(String email) {
+<span class="fc" id="L65">        return repository.findByUsername(email).orElseThrow(</span>
+<span class="fc" id="L66">                () -&gt; new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;O email fornecido (&quot; + email + &quot;) não está cadastrado.&quot;));</span>
+    }
+
+
+    public Page&lt;Usuario&gt; findPage(Integer page, Integer linePerPage, String direction, String orderBy) {
+<span class="fc" id="L71">        PageRequest pageRequest = PageRequest.of(page, linePerPage, Sort.Direction.valueOf(direction), orderBy);</span>
+<span class="fc" id="L72">        return repository.findAll(pageRequest);</span>
+    }
+
+    public void deleteById(Integer id) {
+<span class="fc" id="L76">        this.findById(id);</span>
+        try {
+<span class="fc" id="L78">            repository.deleteById(id);</span>
+<span class="fc" id="L79">        } catch (DataIntegrityViolationException e) {</span>
+<span class="fc" id="L80">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Conta não pode ser excluida&quot;);</span>
+<span class="fc" id="L81">        }</span>
+<span class="fc" id="L82">    }</span>
+
+    public Usuario update(Usuario usuario, Integer id) {
+<span class="fc" id="L85">        Optional&lt;Usuario&gt; existingUsuario = repository.findByUsername(usuario.getUsername());</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (existingUsuario.isPresent()) {</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">            if (!existingUsuario.get().getId().equals(id)) {</span>
+<span class="fc" id="L88">                throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;O e-mail já está sendo usado por outro usuário&quot;);</span>
+            }
+        }
+<span class="fc" id="L91">        Usuario newUsuario = this.findById(id);</span>
+<span class="fc" id="L92">        BeanUtils.copyProperties(usuario, newUsuario, &quot;id&quot;, &quot;password&quot;);</span>
+<span class="fc" id="L93">        return repository.save(newUsuario);</span>
+    }
+
+    public void updatePassword(Usuario usuario, String password) {
+<span class="fc" id="L97">        isValidPassword(password);</span>
+<span class="fc" id="L98">        usuario = this.findByUsername(usuario.getUsername());</span>
+<span class="fc" id="L99">        usuario.setPassword(encoder.encode(password));</span>
+<span class="fc" id="L100">        repository.save(usuario);</span>
+<span class="fc" id="L101">    }</span>
+
+    public void changePassword(ChangePasswordRequestDTO changePasswordRequestDTO) {
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (!changePasswordRequestDTO.getNovaSenha().equals(changePasswordRequestDTO.getConfirmaNovaSenha())) {</span>
+<span class="fc" id="L105">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;A confirmação da nova senha não corresponde à nova senha&quot;);</span>
+        }
+<span class="fc" id="L107">        Usuario usuario = findByUsername(changePasswordRequestDTO.getEmail());</span>
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (!encoder.matches(changePasswordRequestDTO.getSenhaAtual(), usuario.getPassword())) {</span>
+<span class="fc" id="L110">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, &quot;A senha atual fornecida está incorreta&quot;);</span>
+        }
+<span class="fc" id="L112">        this.updatePassword(usuario, changePasswordRequestDTO.getNovaSenha());</span>
+<span class="fc" id="L113">    }</span>
+
+    public boolean isValidPassword(String password) {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (!password.matches(&quot;^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%¨&amp;*()\\_\\-+=§/?°´{\\[ª\\]}º|\\\\&lt;&gt;.;,]).{6,}$&quot;)) {</span>
+<span class="fc" id="L117">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;A senha deve atender aos seguintes requisitos:\n&quot; +</span>
+                    &quot;- Pelo menos uma letra maiúscula\n&quot; +
+                    &quot;- Pelo menos uma letra minúscula\n&quot; +
+                    &quot;- Pelo menos um número\n&quot; +
+                    &quot;- Pelo menos um dos seguintes caracteres especiais: !@#$%¨&amp;*()_-+=§/?°´{[ª]}º|\\&lt;&gt;.,;&quot;);
+        }
+<span class="fc" id="L123">        return true;</span>
+    }
+
+    public Usuario removeAdmin(Integer id) {
+<span class="nc" id="L127">        Usuario usuario = findById(id);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (usuario.getPerfis().contains(Perfil.ADMIN)) {</span>
+<span class="nc" id="L129">            usuario.removePerfil(Perfil.ADMIN);</span>
+<span class="nc" id="L130">            usuario = repository.save(usuario);</span>
+        }else{
+<span class="nc" id="L132">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Não existe usuário com perfil ADMIN.&quot;);</span>
+        }
+<span class="nc" id="L134">        return usuario;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

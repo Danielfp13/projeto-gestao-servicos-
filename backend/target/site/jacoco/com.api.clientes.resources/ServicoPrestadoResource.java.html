@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServicoPrestadoResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">clientes</a> &gt; <a href="index.source.html" class="el_package">com.api.clientes.resources</a> &gt; <span class="el_source">ServicoPrestadoResource.java</span></div><h1>ServicoPrestadoResource.java</h1><pre class="source lang-java linenums">package com.api.clientes.resources;
+
+import com.api.clientes.Service.ServicoPrestadoService;
+import com.api.clientes.dto.ServicoPrestadoDto;
+import com.api.clientes.model.entity.ServicoPrestado;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+
+@RestController
+@RequestMapping(&quot;/servicos-prestado&quot;)
+@Tag(name = &quot;Servicos Prestado Endpoint&quot;, description = &quot;Operações relacionadas aos serviços prestados.&quot;)
+
+<span class="fc" id="L21">public class ServicoPrestadoResource {</span>
+
+    @Autowired
+    private ServicoPrestadoService servicoPrestadoService;
+
+    @PostMapping
+    @Operation(summary = &quot;Cadastro de servico prestado&quot;, description = &quot;Cadastra um novo serviço prestado no sistema.&quot;)
+    public ResponseEntity&lt;ServicoPrestado&gt; insert(@Valid @RequestBody ServicoPrestadoDto servicoPrestadoDto) {
+<span class="fc" id="L29">        ServicoPrestado servicoPrestado = servicoPrestadoService.insert(servicoPrestadoDto);</span>
+<span class="fc" id="L30">        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;)</span>
+<span class="fc" id="L31">                .buildAndExpand(servicoPrestado.getId()).toUri();</span>
+<span class="fc" id="L32">        return ResponseEntity.created(uri).body(servicoPrestado);</span>
+    }
+
+    @GetMapping(value = &quot;/search&quot;)
+    @Operation(summary = &quot;Busca paginada de serviço prestado&quot;,
+            description = &quot;Recupera uma lista paginada de serviços prestados cadastrados no sistema. Permite realizar a busca &quot; +
+                    &quot;pelos campos nome do cliente e mês de prestação do serviço. Além disso, é possível definir o número da página, &quot; +
+                    &quot;a quantidade de registros por página, a direção da ordenação (ASC ou DESC) e o campo de ordenação (ex: nome, id).&quot;
+    )
+    public ResponseEntity&lt;Page&lt;ServicoPrestado&gt;&gt; search(
+            @RequestParam(value = &quot;nome&quot;, defaultValue = &quot;&quot;, required = false) String nome,
+            @RequestParam(value = &quot;mes&quot;, defaultValue = &quot;&quot;, required = false) String mes,
+            @RequestParam(value = &quot;page&quot;, defaultValue = &quot;0&quot;, required = false) Integer page,
+            @RequestParam(value = &quot;size&quot;, defaultValue = &quot;5&quot;, required = false) Integer size,
+            @RequestParam(value = &quot;direction&quot;, defaultValue = &quot;ASC&quot;, required = false) String direction,
+            @RequestParam(value = &quot;orderBy&quot;, defaultValue = &quot;id&quot;) String orderBy
+    ) {
+<span class="fc" id="L49">        Page&lt;ServicoPrestado&gt; pageServicoPrestado = servicoPrestadoService.findByNameClienteAndMonth(nome, mes, page, size, direction, orderBy);</span>
+<span class="fc" id="L50">        return ResponseEntity.ok().body(pageServicoPrestado);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
