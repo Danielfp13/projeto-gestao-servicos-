@@ -1,4 +1,3 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -17,12 +16,13 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2017",
+    "target": "ES2022",  // Atualize para ES2022
     "module": "es2020",
     "lib": [
-      "es2020",
+      "es2022",  // Atualize para ES2022
       "dom"
-    ]
+    ],
+    "useDefineForClassFields": false  // Adicione esta linha para evitar o aviso
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
