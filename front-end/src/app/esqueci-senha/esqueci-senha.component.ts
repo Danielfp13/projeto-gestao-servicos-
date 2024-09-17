@@ -36,15 +36,12 @@ export class EsqueciSenhaComponent {
         this.mensagem = "Senha alterada com sucesso.";
         setTimeout( ()=>{
           this.router.navigate(['/home']);
-        },7000)
+        },5000)
       },
       error => {
         console.log(error.error.erros)
         this.mensagem = error.error.erros;
         this.corMensagem = 'danger';
-/*         setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 9000); */
       }
     );
   }

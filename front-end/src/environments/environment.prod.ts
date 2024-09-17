@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
-  apiURLBase: `https://projeto-servico-prestado-cliente-production.up.railway.app`,
+  apiURLBase: 'https://projeto-gestao-servicos.onrender.com',
   obterTokenUrl: `/auth/signin`
 };
+
