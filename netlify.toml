@@ -1,0 +1,10 @@
+# netlify.toml
+
+[build]
+  command = "ng build --configuration production"  # Gera uma build otimizada para produção
+  publish = "dist/front-end"  # Diretório de publicação do build do front-end
+
+[[redirects]]
+  from = "/*"  # Todas as solicitações serão redirecionadas para o front-end (SPA)
+  to = "/index.html"
+  status = 200
