@@ -10,10 +10,10 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
-@Configuration
+//@Configuration
 public class WebConfig {
 
-    @Bean
+ /*   @Bean
     public FilterRegistrationBean<CorsFilter> corsFilterFilterRegistrationBean() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
@@ -50,5 +50,5 @@ public class WebConfig {
         filter.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         return filter;
-    }
+    }*/
 }

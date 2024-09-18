@@ -1,9 +1,0 @@
-# netlify.toml
-[build]
-  command = "ng build"  # Comando de build do Angular para o front-end
-  publish = "dist/front-end"  # Diretório de publicação do build do front-end
-
-[[redirects]]
-  from = "/*"  # Todas as solicitações serão redirecionadas para o front-end
-  to = "/index.html"
-  status = 200
