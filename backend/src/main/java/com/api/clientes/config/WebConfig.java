@@ -19,8 +19,8 @@ public class WebConfig {
 
         // Definindo as origens permitidas
         corsConfiguration.setAllowedOrigins(List.of(
-                "https://gestao-servicos.netlify.app",
-                "http://localhost:4200"
+                "https://gestao-servicos.netlify.app"
+               // "http://localhost:4200"
         ));
 
         // Definindo os cabeçalhos permitidos

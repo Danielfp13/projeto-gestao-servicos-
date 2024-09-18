@@ -13,7 +13,7 @@ export class UsuarioService {
   constructor(private http: HttpClient) { }
 
   apiURL: string = environment.apiURLBase;
-
+  
   addPerfilAdmin(id: number): Observable<any> {
     return this.http.post<Usuario>(`${this.apiURL}/usuarios/perfil-admin/${id}`, null);
   }

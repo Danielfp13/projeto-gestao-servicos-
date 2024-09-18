@@ -10,7 +10,6 @@ export class UserUpdateService {
   userUpdated$ = this.userUpdatedSubject.asObservable();
 
   notifyUserUpdated() {
-    console.log("Fui chamado!!!")
     this.userUpdatedSubject.next();
   }
 }

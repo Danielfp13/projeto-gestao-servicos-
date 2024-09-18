@@ -12,13 +12,14 @@ export class AuthService {
 
   urlApi: string = environment.apiURLBase + '/usuarios';
   tokenURL: string = environment.apiURLBase + environment.obterTokenUrl;
-  urlBasic: string = environment.apiURLBase;
+  urlBasic: string = environment.apiURLBase; 
   jwtHelper: JwtHelperService = new JwtHelperService();
 
 
   constructor(private http: HttpClient) { }
 
   insertUsuario(usuario: Usuario): Observable<any> {
+    console.log(this.urlApi)
     return this.http.post<Usuario>(`${this.urlApi}`, usuario);
   }
 

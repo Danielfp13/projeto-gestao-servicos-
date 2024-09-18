@@ -17,8 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Map;
 
-
-@CrossOrigin(origins = "https://gestao-servicos.netlify.app")
 @RestController
 @RequestMapping("/usuarios")
 @Tag(name = "Usuario Endpoint", description = "Operações relacionadas a usuário.")
@@ -27,7 +25,7 @@ public class UsuarioResourse {
     @Autowired
     private UsuarioService service;
 
-    @CrossOrigin(origins = "https://gestao-servicos.netlify.app")
+
     @PostMapping
     @Operation(summary = "Cadastro de usuário", description = "Cadastra um novo usuário no sistema.")
     public ResponseEntity<Usuario> insert( @Validated(Usuario.Insercao.class) @RequestBody Usuario usuario) {

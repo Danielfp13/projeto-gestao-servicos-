@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiURLBase: `http://localhost:8080`,
+  apiURLBase: 'https://projeto-gestao-servicos.onrender.com',
+ // apiURLBase: `http://localhost:8080`,
   obterTokenUrl: `/auth/signin`
 };
 
