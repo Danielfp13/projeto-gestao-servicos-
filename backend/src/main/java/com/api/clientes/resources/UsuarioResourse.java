@@ -27,6 +27,7 @@ public class UsuarioResourse {
 
 
     @PostMapping
+    @CrossOrigin(origins = {"https://gestao-servicos.netlify.app", "http://localhost:4200"})
     @Operation(summary = "Cadastro de usuário", description = "Cadastra um novo usuário no sistema.")
     public ResponseEntity<Usuario> insert( @Validated(Usuario.Insercao.class) @RequestBody Usuario usuario) {
         usuario = service.insert(usuario);
