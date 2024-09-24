@@ -17,28 +17,29 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Map;
 
-
 @RestController
 @RequestMapping(&quot;/usuarios&quot;)
 @Tag(name = &quot;Usuario Endpoint&quot;, description = &quot;Operações relacionadas a usuário.&quot;)
-<span class="fc" id="L24">public class UsuarioResourse {</span>
+<span class="fc" id="L23">public class UsuarioResourse {</span>
 
     @Autowired
     private UsuarioService service;
 
+
     @PostMapping
+    @CrossOrigin(origins = {&quot;https://gestao-servicos.netlify.app&quot;, &quot;http://localhost:4200&quot;})
     @Operation(summary = &quot;Cadastro de usuário&quot;, description = &quot;Cadastra um novo usuário no sistema.&quot;)
     public ResponseEntity&lt;Usuario&gt; insert( @Validated(Usuario.Insercao.class) @RequestBody Usuario usuario) {
-<span class="fc" id="L32">        usuario = service.insert(usuario);</span>
-<span class="fc" id="L33">        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;).buildAndExpand(usuario.getId()).toUri();</span>
-<span class="fc" id="L34">        return ResponseEntity.created(uri).body(usuario);</span>
+<span class="fc" id="L33">        usuario = service.insert(usuario);</span>
+<span class="fc" id="L34">        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(&quot;/{id}&quot;).buildAndExpand(usuario.getId()).toUri();</span>
+<span class="fc" id="L35">        return ResponseEntity.created(uri).body(usuario);</span>
     }
 
     @PutMapping (&quot;/{id}&quot;)
     @Operation(summary = &quot;Alterar usuário&quot;, description = &quot;Altera os dados de um usuário previamente cadastrado no sistema.&quot;)
     public ResponseEntity&lt;Usuario&gt; update(@Validated(Usuario.Atualizacao.class) @RequestBody Usuario usuario, @PathVariable Integer id){
-<span class="fc" id="L40">        usuario = service.update(usuario,id);</span>
-<span class="fc" id="L41">        return ResponseEntity.ok().body(usuario);</span>
+<span class="fc" id="L41">        usuario = service.update(usuario,id);</span>
+<span class="fc" id="L42">        return ResponseEntity.ok().body(usuario);</span>
     }
 
     @PostMapping (&quot;/alterar-senha&quot;)
@@ -46,43 +47,43 @@ import java.util.Map;
             description = &quot;Permite a alteração da senha de um usuário previamente cadastrado no sistema informando os seguintes &quot; +
                     &quot;campos senhaAtual, novaSenha, confirmaNovaSenha e email.&quot;)
     public ResponseEntity&lt;Void&gt; changePassword(@Valid @RequestBody ChangePasswordRequestDTO request) {
-<span class="fc" id="L49">        service.changePassword(request);</span>
-<span class="fc" id="L50">        return ResponseEntity.ok().build();</span>
+<span class="fc" id="L50">        service.changePassword(request);</span>
+<span class="fc" id="L51">        return ResponseEntity.ok().build();</span>
     }
 
     @PostMapping(&quot;/perfil-admin/{id}&quot;)
     @Operation(summary = &quot;Adicionar perfil ADMIN&quot;, description = &quot;Adiciona o perfil de adiministrador a um usuário informando o id do usuário.&quot;)
     public ResponseEntity&lt;Usuario&gt; addAdmin(@PathVariable Integer id) {
-<span class="fc" id="L56">        Usuario usuario = service.addAdmin(id);</span>
-<span class="fc" id="L57">        return ResponseEntity.ok(usuario);</span>
+<span class="fc" id="L57">        Usuario usuario = service.addAdmin(id);</span>
+<span class="fc" id="L58">        return ResponseEntity.ok(usuario);</span>
     }
 
     @PostMapping(&quot;/remover-perfil-admin/{id}&quot;)
     @Operation(summary = &quot;Remove o perfil ADMIN&quot;, description = &quot;Remove o perfil de adiministrador a um usuário informando o id do usuário.&quot;)
     public ResponseEntity&lt;Usuario&gt; removeAdmin(@PathVariable Integer id) {
-<span class="nc" id="L63">        Usuario usuario = service.removeAdmin(id);</span>
-<span class="nc" id="L64">        return ResponseEntity.ok(usuario);</span>
+<span class="nc" id="L64">        Usuario usuario = service.removeAdmin(id);</span>
+<span class="nc" id="L65">        return ResponseEntity.ok(usuario);</span>
     }
 
     @GetMapping(&quot;/{id}&quot;)
     @Operation(summary = &quot;Consultar Usuário por ID&quot;, description = &quot;Recupera os dados de um usuário previamente cadastrado&quot; +
             &quot; no sistema, utilizando o identificador único (ID) fornecido.&quot;)
     public ResponseEntity&lt;Usuario&gt;findById(@PathVariable Integer id){
-<span class="fc" id="L71">        return ResponseEntity.ok(service.findById(id));</span>
+<span class="fc" id="L72">        return ResponseEntity.ok(service.findById(id));</span>
     }
 
     @GetMapping(&quot;/username/{username}&quot;)
     @Operation(summary = &quot;Consultar Usuário por username&quot;, description = &quot;Recupera os dados de um usuário previamente cadastrado&quot; +
             &quot; no sistema, utilizando o identificador o email fornecido.&quot;)
     public ResponseEntity&lt;Usuario&gt;findByUsername(@PathVariable String username){
-<span class="fc" id="L78">        return ResponseEntity.ok(service.findByUsername(username));</span>
+<span class="fc" id="L79">        return ResponseEntity.ok(service.findByUsername(username));</span>
     }
 
     @DeleteMapping(&quot;/{id}&quot;)
     @Operation(summary = &quot;Excluir um usuário&quot;, description = &quot;Exclui um usuário já cadastrado no sistema, informando o id do usuário.&quot;)
     public ResponseEntity&lt;Usuario&gt;deleteById(@PathVariable Integer id){
-<span class="fc" id="L84">        service.deleteById(id);</span>
-<span class="fc" id="L85">        return ResponseEntity.noContent().build();</span>
+<span class="fc" id="L85">        service.deleteById(id);</span>
+<span class="fc" id="L86">        return ResponseEntity.noContent().build();</span>
     }
 
     @GetMapping(&quot;/page&quot;)
@@ -96,7 +97,7 @@ import java.util.Map;
             @RequestParam(value = &quot;direction&quot;, defaultValue = &quot;ASC&quot;, required = false) String direction,
             @RequestParam(value = &quot;orderBy&quot;, defaultValue = &quot;nome&quot;, required = false) String orderBy
     ){
-<span class="fc" id="L99">        return ResponseEntity.ok(service.findPage(page,linePerPage,direction,orderBy));</span>
+<span class="fc" id="L100">        return ResponseEntity.ok(service.findPage(page,linePerPage,direction,orderBy));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

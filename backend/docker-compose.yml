@@ -1,32 +1,33 @@
 version: '3.8'
 
 services:
-  banco-pg:
-    image: postgres:14
-    container_name: postgres-db
-    environment:
-      POSTGRES_DB: servicos
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"  # Mapeia a porta 5433 do host para a porta 5432 do container
+  #banco-pg:
+    #image: postgres:14
+    #container_name: postgres-db
+    #environment:
+      #POSTGRES_DB: servicos
+      #POSTGRES_USER: postgres
+      #POSTGRES_PASSWORD: 123
+    #volumes:
+      #- postgres-data-servico-prestado:/var/lib/postgresql/data
+    #ports:
+      #- "5433:5432"  # Mapeia a porta 5433 do host para a porta 5432 do container
 
   backend:
     build:
       context: .
     container_name: backend
     environment:
-      PGHOST: db
-      PGPORT: 5432
-      PGDATABASE: servicos
-      PGUSER: postgres
-      PGPASSWORD: 123
+      PGHOST: ${PGHOST}
+      PGPORT: ${PGPORT}
+      PGDATABASE: ${PGDATABASE}
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      APP_PROFILE: ${APP_PROFILE}
     ports:
       - "8080:8080"
-    depends_on:
-      - banco-pg
+    #depends_on:
+      #- banco-pg
 
-volumes:
-  postgres-data:
+#volumes:
+  #postgres-data-servico-prestado:

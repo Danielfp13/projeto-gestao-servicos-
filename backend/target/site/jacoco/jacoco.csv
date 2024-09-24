@@ -19,7 +19,7 @@ clientes,com.api.clientes.config,H2ConsoleTestConfiguration,0,15,0,0,0,5,0,2,0,2
 clientes,com.api.clientes.config,SecurityConfig,0,142,1,1,0,19,1,7,0,7
 clientes,com.api.clientes.config,InternacionalizacaoConfig,0,28,0,0,0,9,0,3,0,3
 clientes,com.api.clientes.config,LocalConfig,0,47,0,0,0,7,0,2,0,2
-clientes,com.api.clientes.config,WebConfig,0,55,0,0,0,13,0,2,0,2
+clientes,com.api.clientes.config,WebConfig,0,61,0,0,0,12,0,2,0,2
 clientes,com.api.clientes.config,OpenApiConfig,0,17,0,0,0,6,0,2,0,2
 clientes,com.api.clientes.model.entity,Cliente,0,50,0,0,0,9,0,11,0,11
 clientes,com.api.clientes.model.entity,ServicoPrestado,0,56,0,0,0,8,0,12,0,12

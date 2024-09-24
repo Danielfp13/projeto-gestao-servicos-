@@ -1,6 +1,5 @@
 package com.api.clientes.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import com.api.clientes.security.jwt.JwtConfigurer;
 import com.api.clientes.security.jwt.JwtTokenFilter;
 import com.api.clientes.security.jwt.JwtTokenProvider;
@@ -17,12 +16,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Arrays;
@@ -32,15 +25,11 @@ import java.util.Arrays;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    @Value("${cors.origins}")
-    private String corsOrigins;
-
     @Autowired
     private JwtTokenProvider tokenProvider;
 
     @Autowired
     private Environment env;
-
 
 
     @Bean
@@ -81,25 +70,10 @@ public class SecurityConfig {
                 )
                 .apply(new JwtConfigurer(tokenProvider))
                 .and()
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
 
     }
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
 
-        String[] origins = corsOrigins.split(",");
-
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOriginPatterns(Arrays.asList(origins));
-        corsConfig.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "PATCH","OPTIONS"));
-        corsConfig.setAllowCredentials(true);
-        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);
-        return source;
-    }
 }
 
 
