@@ -9,19 +9,12 @@ Este projeto é uma API desenvolvida em Spring Boot 3.0.5 com um frontend em Ang
 
 - [Descrição do Projeto](#descrição-do-projeto)
 - [Funcionalidades](#funcionalidades)
-- [Telas](#telas)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Pré-requisitos](#pré-requisitos)
 - [Estrutura de Projeto](#estrutura-de-projeto)
 - [Collections para Teste](#collections-para-teste)
 - [Scripts SQL](#scripts-sql)
 - [Instalação e Configuração](#instalação-e-configuração)
-- [Deploy Backend](#deploy-backend)
-- [Deploy Frontend](#deploy-frontend)
-- [Uso](#uso)
-- [Testes](#testes)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
 
 ## Descrição do Projeto
 
